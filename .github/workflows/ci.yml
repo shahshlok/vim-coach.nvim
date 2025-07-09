@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        neovim_version: ['stable', 'nightly']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Neovim
+      uses: rhymond/setup-neovim@v0.2.1
+      with:
+        neovim-version: ${{ matrix.neovim_version }}
+
+    - name: Setup Lua
+      uses: leafo/gh-actions-lua@v10.0.0
+      with:
+        luaVersion: "5.1"
+
+    - name: Setup Luarocks
+      uses: leafo/gh-actions-luarocks@v4.3.0
+
+    - name: Install dependencies
+      run: |
+        luarocks install busted
+        luarocks install luacov
+
+    - name: Run lint
+      run: |
+        # Add linting when ready
+        echo "Linting not yet configured"
+
+    - name: Run tests
+      run: |
+        # Add tests when ready
+        echo "Tests not yet configured"
+
+    - name: Test plugin load
+      run: |
+        nvim --headless -c "lua require('vim-coach')" -c "qa!"
+
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check documentation
+      run: |
+        # Check that all required files exist
+        test -f README.md
+        test -f LICENSE
+        test -f CHANGELOG.md
+        test -f doc/vim-coach.txt
+        echo "Documentation files present"
+
+    - name: Validate help tags
+      run: |
+        # Basic validation of help file format
+        grep -q "\*vim-coach\*" doc/vim-coach.txt
+        echo "Help tags validated"

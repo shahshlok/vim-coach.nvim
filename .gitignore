@@ -1,0 +1,74 @@
+# Compiled Lua sources
+luac.out
+
+# luarocks build files
+*.src.rock
+*.zip
+*.tar.gz
+
+# Object files
+*.o
+*.os
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.def
+*.exp
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# macOS
+.DS_Store
+
+# Vim/Neovim
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+tests/
+spec/
+
+# Documentation builds
+docs/_build/

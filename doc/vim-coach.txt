@@ -1,0 +1,171 @@
+*vim-coach.txt*	A comprehensive Vim command reference for beginners
+
+			VIM COACH - YOUR PERSONAL VIM COACH
+
+Author: Shlok Shah
+License: MIT
+Version: 1.0.0
+
+==============================================================================
+CONTENTS						*vim-coach-contents*
+
+    1. Introduction ......... |vim-coach-introduction|
+    2. Installation ......... |vim-coach-installation|
+    3. Usage ................ |vim-coach-usage|
+    4. Commands ............. |vim-coach-commands|
+    5. Configuration ........ |vim-coach-configuration|
+    6. API .................. |vim-coach-api|
+    7. Contributing ......... |vim-coach-contributing|
+
+==============================================================================
+1. INTRODUCTION					*vim-coach-introduction*
+
+vim-coach.nvim is a comprehensive, beginner-friendly command reference for
+Neovim. It provides an interactive, searchable interface to help you learn
+and master Vim commands with detailed explanations, beginner tips, and
+context-aware guidance.
+
+Features:
+• 120+ commands with detailed explanations
+• Fuzzy searchable through Telescope
+• Beginner-focused coaching tips
+• Context-aware help (file vs explorer behavior)
+• Copy keybinds to clipboard
+• Categorized browsing
+
+==============================================================================
+2. INSTALLATION					*vim-coach-installation*
+
+Prerequisites:
+• Neovim >= 0.7
+• telescope.nvim
+• plenary.nvim
+
+With lazy.nvim: >
+    {
+      "your-username/vim-coach.nvim",
+      dependencies = {
+        "nvim-telescope/telescope.nvim",
+        "nvim-lua/plenary.nvim",
+      },
+      config = function()
+        require("vim-coach").setup()
+      end,
+    }
+<
+
+==============================================================================
+3. USAGE						*vim-coach-usage*
+
+Basic usage:
+• |:VimCoach| - Open all commands
+• |<leader>?| - Default keybind to open vim-coach
+• |<leader>hm| - Motion commands only
+• |<leader>he| - Editing commands only
+• |<leader>hv| - Visual mode commands
+• |<leader>hp| - Plugin commands
+
+In the picker:
+• <Enter> - Copy keybind to clipboard
+• <C-y> - Copy keybind to clipboard
+• <Esc> - Close picker
+
+==============================================================================
+4. COMMANDS						*vim-coach-commands*
+
+:VimCoach [category]				*:VimCoach*
+		Open vim-coach picker with optional category filter.
+		
+		Categories:
+		• all (default) - Show all commands
+		• motions - Movement commands (h,j,k,l,w,b,f,etc.)
+		• editing - Text manipulation (i,a,d,c,y,p,etc.)
+		• visual - Visual mode operations
+		• plugins - Plugin-specific commands
+
+		Examples: >
+		    :VimCoach
+		    :VimCoach motions
+		    :VimCoach editing
+<
+
+:Coach [category]				*:Coach*
+		Alias for |:VimCoach|.
+
+==============================================================================
+5. CONFIGURATION				*vim-coach-configuration*
+
+Default configuration: >
+    require("vim-coach").setup({
+      window = {
+        border = "rounded",
+        title_pos = "center",
+      },
+      keymaps = {
+        copy_keymap = "<C-y>",
+        close = "<Esc>",
+      },
+    })
+<
+
+To disable default keymaps: >
+    vim.g.vim_coach_no_default_keymaps = 1
+    require("vim-coach").setup()
+<
+
+Default keymaps:				*vim-coach-keymaps*
+	<leader>?	Open comprehensive help
+	<leader>hm	Motion commands
+	<leader>he	Editing commands  
+	<leader>hv	Visual mode commands
+	<leader>hp	Plugin commands
+	<leader>hh	All commands
+
+==============================================================================
+6. API							*vim-coach-api*
+
+require("vim-coach").setup({opts})		*vim-coach.setup()*
+		Setup vim-coach with optional configuration.
+
+require("vim-coach").coach_picker({category})	*vim-coach.coach_picker()*
+		Open the command picker with optional category filter.
+
+require("vim-coach").info()			*vim-coach.info()*
+		Get plugin information including version and command count.
+
+require("vim-coach").get_commands({category})	*vim-coach.get_commands()*
+		Get commands by category programmatically.
+
+require("vim-coach").get_all_commands()		*vim-coach.get_all_commands()*
+		Get all commands as a flat list.
+
+==============================================================================
+7. CONTRIBUTING					*vim-coach-contributing*
+
+To add new commands, edit the files in lua/vim-coach/commands/:
+• motions.lua - Movement commands
+• editing.lua - Text manipulation commands  
+• visual.lua - Visual mode commands
+• plugins.lua - Plugin-specific commands
+
+Command format: >
+    {
+      name = "Command Name",
+      keybind = "key",
+      modes = {"n", "v"},
+      explanation = "What the command does",
+      beginner_tip = "Helpful tip for beginners",
+      when_to_use = "When this command is most useful", 
+      context_notes = {
+        file = "Behavior in files",
+        explorer = "Behavior in explorers",
+      },
+      examples = {"example1", "example2"}
+    }
+<
+
+Report bugs and feature requests at:
+https://github.com/your-username/vim-coach.nvim/issues
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
