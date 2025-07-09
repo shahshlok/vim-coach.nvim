@@ -34,7 +34,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ```lua
 {
-  "your-username/vim-coach.nvim",
+  "shahshlok/vim-coach.nvim",
   dependencies = {
     "nvim-telescope/telescope.nvim",
     "nvim-lua/plenary.nvim",
@@ -52,7 +52,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ```lua
 use {
-  "your-username/vim-coach.nvim",
+  "shahshlok/vim-coach.nvim",
   requires = {
     "nvim-telescope/telescope.nvim",
     "nvim-lua/plenary.nvim",
@@ -68,7 +68,7 @@ use {
 ```vim
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'your-username/vim-coach.nvim'
+Plug 'shahshlok/vim-coach.nvim'
 
 " In your init.lua or init.vim:
 lua require('vim-coach').setup()
