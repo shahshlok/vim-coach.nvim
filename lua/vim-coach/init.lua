@@ -59,6 +59,55 @@ function M.coach_picker(category)
   local items = {}
   for i, cmd in ipairs(cmd_list) do
     if cmd then
+      -- Build preview content
+      local preview_content = {}
+      
+      -- Header
+      table.insert(preview_content, "╭─ " .. (cmd.name or "Unknown Command") .. " ─╮")
+      table.insert(preview_content, "")
+      
+      -- Basic info
+      table.insert(preview_content, "🔧 Keybind: " .. (cmd.keybind or "N/A"))
+      table.insert(preview_content, "📂 Category: " .. (cmd.category or category))
+      table.insert(preview_content, "🎯 Modes: " .. table.concat(cmd.modes or {}, ", "))
+      table.insert(preview_content, "")
+      
+      -- Explanation
+      table.insert(preview_content, "📖 What it does:")
+      table.insert(preview_content, cmd.explanation or "No explanation available")
+      table.insert(preview_content, "")
+      
+      -- Beginner tip
+      if cmd.beginner_tip then
+        table.insert(preview_content, "💡 Beginner Tip:")
+        table.insert(preview_content, cmd.beginner_tip)
+        table.insert(preview_content, "")
+      end
+      
+      -- When to use
+      if cmd.when_to_use then
+        table.insert(preview_content, "⏰ When to use:")
+        table.insert(preview_content, cmd.when_to_use)
+        table.insert(preview_content, "")
+      end
+      
+      -- Examples
+      if cmd.examples and #cmd.examples > 0 then
+        table.insert(preview_content, "📝 Examples:")
+        for _, example in ipairs(cmd.examples) do
+          table.insert(preview_content, "  • " .. example)
+        end
+        table.insert(preview_content, "")
+      end
+      
+      -- Context notes
+      if cmd.context_notes then
+        table.insert(preview_content, "🌐 Context Notes:")
+        for context, note in pairs(cmd.context_notes) do
+          table.insert(preview_content, "  " .. context .. ": " .. note)
+        end
+      end
+      
       table.insert(items, {
         idx = i,
         name = cmd.name or "Unknown Command",
@@ -71,6 +120,10 @@ function M.coach_picker(category)
         modes = cmd.modes or {},
         category = cmd.category or category,
         text = (cmd.name or "Unknown Command") .. " (" .. (cmd.keybind or "N/A") .. ")",
+        preview = {
+          text = table.concat(preview_content, "\n"),
+          ft = "text",
+        },
       })
     end
   end
@@ -78,9 +131,7 @@ function M.coach_picker(category)
   snacks.picker({
     title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
     items = items,
-    layout = {
-      preview = true,
-    },
+    preview = "preview",
     format = function(item)
       local ret = {}
       
@@ -98,59 +149,6 @@ function M.coach_picker(category)
       ret[#ret + 1] = { explanation, "SnacksPickerComment" }
       
       return ret
-    end,
-    preview = function(item)
-      -- Return simple string content for snacks.picker
-      local content = {}
-      
-      -- Header
-      table.insert(content, "╭─ " .. item.name .. " ─╮")
-      table.insert(content, "")
-      
-      -- Basic info
-      table.insert(content, "🔧 Keybind: " .. item.keybind)
-      table.insert(content, "📂 Category: " .. item.category)
-      table.insert(content, "🎯 Modes: " .. table.concat(item.modes, ", "))
-      table.insert(content, "")
-      
-      -- Explanation
-      table.insert(content, "📖 What it does:")
-      table.insert(content, item.explanation or "No explanation available")
-      table.insert(content, "")
-      
-      -- Beginner tip
-      if item.beginner_tip then
-        table.insert(content, "💡 Beginner Tip:")
-        table.insert(content, item.beginner_tip)
-        table.insert(content, "")
-      end
-      
-      -- When to use
-      if item.when_to_use then
-        table.insert(content, "⏰ When to use:")
-        table.insert(content, item.when_to_use)
-        table.insert(content, "")
-      end
-      
-      -- Examples
-      if item.examples and #item.examples > 0 then
-        table.insert(content, "📝 Examples:")
-        for _, example in ipairs(item.examples) do
-          table.insert(content, "  • " .. example)
-        end
-        table.insert(content, "")
-      end
-      
-      -- Context notes
-      if item.context_notes then
-        table.insert(content, "🌐 Context Notes:")
-        for context, note in pairs(item.context_notes) do
-          table.insert(content, "  " .. context .. ": " .. note)
-        end
-      end
-      
-      -- Return as simple string joined by newlines
-      return table.concat(content, "\n")
     end,
     confirm = function(picker, item)
       picker:close()
