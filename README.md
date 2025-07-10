@@ -10,12 +10,13 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ## ✨ Features
 
-- 🔍 **Fuzzy searchable** - Find any command instantly with snacks.picker integration
+- 🔍 **Fuzzy searchable** - Find any command instantly with modern snacks.picker interface
 - 📚 **120+ commands** - Comprehensive coverage of Vim motions, editing, visual mode, and plugins
 - 🎓 **Beginner-focused** - Detailed explanations with "when to use" guidance
 - 🌐 **Context-aware** - Different explanations for file vs explorer vs git contexts
 - 💡 **Coaching tips** - Learn WHY and WHEN to use each command
 - 📋 **Copy keybinds** - Press Enter or Ctrl+Y to copy commands to clipboard
+- 📱 **Modern UI** - Clean interface with text wrapping and enhanced preview
 - 🎯 **Categorized** - Browse by command type (motions, editing, visual, plugins)
 
 ## 🎪 Demo
