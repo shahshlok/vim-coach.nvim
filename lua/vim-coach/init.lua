@@ -62,15 +62,8 @@ function M.coach_picker(category)
       print("WARNING: Command " .. i .. " is nil")
     else
       table.insert(items, {
-        text = cmd.name or "",
-        keybind = cmd.keybind or "",
-        explanation = cmd.explanation or "",
-        category = cmd.category or "unknown",
-        modes = cmd.modes or {},
-        beginner_tip = cmd.beginner_tip,
-        when_to_use = cmd.when_to_use,
-        examples = cmd.examples,
-        context_notes = cmd.context_notes,
+        text = (cmd.name or "") .. " (" .. (cmd.keybind or "") .. ")",
+        cmd = cmd, -- Store original command data
       })
     end
   end
@@ -83,40 +76,42 @@ function M.coach_picker(category)
     title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
     format = function(item)
       -- Debug protection against nil items
-      if not item then
-        return "ERROR: nil item"
+      if not item or not item.cmd then
+        return "ERROR: malformed item"
       end
       
-      local text = item.text or ""
-      local keybind = item.keybind or ""
-      local explanation = item.explanation or ""
+      local cmd = item.cmd
+      local name = cmd.name or ""
+      local keybind = cmd.keybind or ""
+      local explanation = cmd.explanation or ""
       
       -- Safely truncate explanation
       local truncated = explanation
-      if #explanation > 80 then
-        truncated = explanation:sub(1, 80) .. "..."
+      if #explanation > 60 then
+        truncated = explanation:sub(1, 60) .. "..."
       end
       
-      return string.format("%-20s %-15s %s", text, keybind, truncated)
+      return string.format("%-20s %-15s %s", name, keybind, truncated)
     end,
     preview = function(item)
       -- Debug protection against nil items
-      if not item then
-        return { lines = {"ERROR: nil item in preview"}, ft = "text" }
+      if not item or not item.cmd then
+        return { lines = {"ERROR: malformed item in preview"}, ft = "text" }
       end
       
+      local cmd = item.cmd
       local lines = {}
       
-      table.insert(lines, "╭─ " .. (item.text or "Unknown Command") .. " ─╮")
+      table.insert(lines, "╭─ " .. (cmd.name or "Unknown Command") .. " ─╮")
       table.insert(lines, "")
-      table.insert(lines, "🔧 Keybind: " .. (item.keybind or "N/A"))
-      table.insert(lines, "📂 Category: " .. (item.category or "unknown"))
-      table.insert(lines, "🎯 Modes: " .. table.concat(item.modes or {}, ", "))
+      table.insert(lines, "🔧 Keybind: " .. (cmd.keybind or "N/A"))
+      table.insert(lines, "📂 Category: " .. (cmd.category or "unknown"))
+      table.insert(lines, "🎯 Modes: " .. table.concat(cmd.modes or {}, ", "))
       table.insert(lines, "")
       table.insert(lines, "📖 What it does:")
       
       -- Wrap long explanations
-      local explanation = item.explanation or "No explanation available"
+      local explanation = cmd.explanation or "No explanation available"
       local wrapped_explanation = {}
       for line in explanation:gmatch("[^\r\n]+") do
         if string.len(line) > 70 then
@@ -148,29 +143,29 @@ function M.coach_picker(category)
       end
       table.insert(lines, "")
       
-      if item.beginner_tip then
+      if cmd.beginner_tip then
         table.insert(lines, "💡 Beginner Tip:")
-        table.insert(lines, item.beginner_tip)
+        table.insert(lines, cmd.beginner_tip)
         table.insert(lines, "")
       end
       
-      if item.when_to_use then
+      if cmd.when_to_use then
         table.insert(lines, "⏰ When to use:")
-        table.insert(lines, item.when_to_use)
+        table.insert(lines, cmd.when_to_use)
         table.insert(lines, "")
       end
       
-      if item.examples then
+      if cmd.examples then
         table.insert(lines, "📝 Examples:")
-        for _, example in ipairs(item.examples) do
+        for _, example in ipairs(cmd.examples) do
           table.insert(lines, "  • " .. example)
         end
         table.insert(lines, "")
       end
       
-      if item.context_notes then
+      if cmd.context_notes then
         table.insert(lines, "🌐 Context Notes:")
-        for context, note in pairs(item.context_notes) do
+        for context, note in pairs(cmd.context_notes) do
           table.insert(lines, "  " .. context .. ": " .. note)
         end
       end
@@ -182,16 +177,16 @@ function M.coach_picker(category)
     end,
     on_select = function(item)
       -- Copy keybind to clipboard if available
-      if item and item.keybind and item.keybind ~= "" then
-        vim.fn.setreg("+", item.keybind)
-        vim.notify("Copied '" .. item.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
+      if item and item.cmd and item.cmd.keybind and item.cmd.keybind ~= "" then
+        vim.fn.setreg("+", item.cmd.keybind)
+        vim.notify("Copied '" .. item.cmd.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
       end
     end,
     actions = {
       ["<C-y>"] = function(item)
-        if item and item.keybind and item.keybind ~= "" then
-          vim.fn.setreg("+", item.keybind)
-          vim.notify("Copied '" .. item.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
+        if item and item.cmd and item.cmd.keybind and item.cmd.keybind ~= "" then
+          vim.fn.setreg("+", item.cmd.keybind)
+          vim.notify("Copied '" .. item.cmd.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
         end
       end,
     },
