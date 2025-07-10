@@ -4,7 +4,7 @@
 
 Author: Shlok Shah
 License: MIT
-Version: 1.0.0
+Version: 2.0.0
 
 ==============================================================================
 CONTENTS						*vim-coach-contents*
@@ -27,7 +27,7 @@ context-aware guidance.
 
 Features:
 • 120+ commands with detailed explanations
-• Fuzzy searchable through Telescope
+• Fuzzy searchable through snacks.picker
 • Beginner-focused coaching tips
 • Context-aware help (file vs explorer behavior)
 • Copy keybinds to clipboard
@@ -38,15 +38,13 @@ Features:
 
 Prerequisites:
 • Neovim >= 0.7
-• telescope.nvim
-• plenary.nvim
+• snacks.nvim (with picker support)
 
 With lazy.nvim: >
     {
       "your-username/vim-coach.nvim",
       dependencies = {
-        "nvim-telescope/telescope.nvim",
-        "nvim-lua/plenary.nvim",
+        "folke/snacks.nvim",
       },
       config = function()
         require("vim-coach").setup()

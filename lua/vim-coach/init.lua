@@ -62,41 +62,49 @@ function M.coach_picker(category)
       print("WARNING: Command " .. i .. " is nil")
     else
       table.insert(items, {
-        text = (cmd.name or "") .. " (" .. (cmd.keybind or "") .. ")",
+        idx = i,
+        name = cmd.name or "Unknown Command",
+        keybind = cmd.keybind or "",
+        text = (cmd.name or "Unknown Command") .. " (" .. (cmd.keybind or "N/A") .. ")",
         cmd = cmd, -- Store original command data
       })
     end
   end
   
-  print("DEBUG: Created " .. #items .. " items for picker")
-  
-  snacks.picker.pick({
-    source = "vim-coach",
-    items = items,
+  snacks.picker({
     title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
-    format = function(item)
+    layout = {
+      preset = "default",
+      preview = true,
+    },
+    items = items,
+    format = function(item, _)
       -- Debug protection against nil items
       if not item or not item.cmd then
-        return "ERROR: malformed item"
+        return {{ "ERROR: malformed item", "ErrorMsg" }}
       end
       
       local cmd = item.cmd
-      local name = cmd.name or ""
-      local keybind = cmd.keybind or ""
-      local explanation = cmd.explanation or ""
+      local name = cmd.name or "Unknown"
+      local keybind = cmd.keybind or "N/A"
+      local explanation = cmd.explanation or "No explanation"
       
       -- Safely truncate explanation
       local truncated = explanation
-      if #explanation > 60 then
-        truncated = explanation:sub(1, 60) .. "..."
+      if #explanation > 50 then
+        truncated = explanation:sub(1, 50) .. "..."
       end
       
-      return string.format("%-20s %-15s %s", name, keybind, truncated)
+      return {
+        { string.format("%-25s", name), "Title" },
+        { string.format("%-12s", keybind), "Special" },
+        { truncated, "Comment" },
+      }
     end,
-    preview = function(item)
+    preview = function(item, _)
       -- Debug protection against nil items
       if not item or not item.cmd then
-        return { lines = {"ERROR: malformed item in preview"}, ft = "text" }
+        return { "ERROR: malformed item in preview" }
       end
       
       local cmd = item.cmd
@@ -170,20 +178,20 @@ function M.coach_picker(category)
         end
       end
       
-      return {
-        lines = lines,
-        ft = "markdown",
-      }
+      return lines
     end,
-    on_select = function(item)
+    confirm = function(picker, item)
       -- Copy keybind to clipboard if available
       if item and item.cmd and item.cmd.keybind and item.cmd.keybind ~= "" then
+        picker:close()
         vim.fn.setreg("+", item.cmd.keybind)
         vim.notify("Copied '" .. item.cmd.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
+      else
+        picker:close()
       end
     end,
     actions = {
-      ["<C-y>"] = function(item)
+      ["<C-y>"] = function(picker, item)
         if item and item.cmd and item.cmd.keybind and item.cmd.keybind ~= "" then
           vim.fn.setreg("+", item.cmd.keybind)
           vim.notify("Copied '" .. item.cmd.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
