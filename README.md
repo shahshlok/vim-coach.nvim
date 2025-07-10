@@ -10,7 +10,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ## ✨ Features
 
-- 🔍 **Fuzzy searchable** - Find any command instantly with Telescope integration
+- 🔍 **Fuzzy searchable** - Find any command instantly with snacks.picker integration
 - 📚 **120+ commands** - Comprehensive coverage of Vim motions, editing, visual mode, and plugins
 - 🎓 **Beginner-focused** - Detailed explanations with "when to use" guidance
 - 🌐 **Context-aware** - Different explanations for file vs explorer vs git contexts
@@ -32,24 +32,6 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim) (Recommended)
 
-**With telescope.nvim (default):**
-```lua
-{
-  "shahshlok/vim-coach.nvim",
-  dependencies = {
-    "nvim-telescope/telescope.nvim",
-    "nvim-lua/plenary.nvim",
-  },
-  config = function()
-    require("vim-coach").setup()
-  end,
-  keys = {
-    { "<leader>?", "<cmd>VimCoach<cr>", desc = "Vim Coach" },
-  },
-}
-```
-
-**With snacks.nvim:**
 ```lua
 {
   "shahshlok/vim-coach.nvim",
@@ -57,9 +39,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
     "folke/snacks.nvim",
   },
   config = function()
-    require("vim-coach").setup({
-      picker = "snacks", -- Optional: auto-detection works too
-    })
+    require("vim-coach").setup()
   end,
   keys = {
     { "<leader>?", "<cmd>VimCoach<cr>", desc = "Vim Coach" },
@@ -69,21 +49,6 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
-**With telescope.nvim:**
-```lua
-use {
-  "shahshlok/vim-coach.nvim",
-  requires = {
-    "nvim-telescope/telescope.nvim",
-    "nvim-lua/plenary.nvim",
-  },
-  config = function()
-    require("vim-coach").setup()
-  end
-}
-```
-
-**With snacks.nvim:**
 ```lua
 use {
   "shahshlok/vim-coach.nvim",
@@ -91,32 +56,19 @@ use {
     "folke/snacks.nvim",
   },
   config = function()
-    require("vim-coach").setup({
-      picker = "snacks",
-    })
+    require("vim-coach").setup()
   end
 }
 ```
 
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
-**With telescope.nvim:**
-```vim
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'shahshlok/vim-coach.nvim'
-
-" In your init.lua or init.vim:
-lua require('vim-coach').setup()
-```
-
-**With snacks.nvim:**
 ```vim
 Plug 'folke/snacks.nvim'
 Plug 'shahshlok/vim-coach.nvim'
 
 " In your init.lua or init.vim:
-lua require('vim-coach').setup({ picker = "snacks" })
+lua require('vim-coach').setup()
 ```
 
 ## 🚀 Usage
@@ -155,9 +107,6 @@ lua require('vim-coach').setup({ picker = "snacks" })
 
 ```lua
 require("vim-coach").setup({
-  -- Picker backend: "auto" (default), "telescope", "snacks"
-  picker = "auto",
-  
   -- Disable default keymaps
   -- Set vim.g.vim_coach_no_default_keymaps = 1 before setup
   
@@ -169,26 +118,6 @@ require("vim-coach").setup({
     copy_keymap = "<C-y>",
     close = "<Esc>",
   },
-})
-```
-
-### Picker Backends
-
-vim-coach.nvim supports multiple picker backends:
-
-- **auto** (default): Automatically detects and uses the first available picker (telescope → snacks)
-- **telescope**: Uses telescope.nvim (requires telescope.nvim + plenary.nvim)
-- **snacks**: Uses snacks.nvim picker (requires snacks.nvim)
-
-```lua
--- Force telescope backend
-require("vim-coach").setup({
-  picker = "telescope",
-})
-
--- Force snacks backend
-require("vim-coach").setup({
-  picker = "snacks",
 })
 ```
 
@@ -242,9 +171,7 @@ Delete Line (dd)
 ## 🛠️ Requirements
 
 - Neovim >= 0.7
-- One of the following picker backends:
-  - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) + [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
-  - [snacks.nvim](https://github.com/folke/snacks.nvim) (with picker support)
+- [snacks.nvim](https://github.com/folke/snacks.nvim) (with picker support)
 
 ## 🤝 Contributing
 
@@ -283,7 +210,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Built with [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+- Built with [snacks.nvim](https://github.com/folke/snacks.nvim)
 - Inspired by the need for better Vim learning resources
 - Created for the Neovim community
 

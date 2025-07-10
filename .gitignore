@@ -75,3 +75,6 @@ docs/_build/
 
 # Markdown files
 *.md
+
+# Claude Code Files
+.claude
