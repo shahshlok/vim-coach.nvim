@@ -78,6 +78,9 @@ function M.coach_picker(category)
   snacks.picker({
     title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
     items = items,
+    layout = {
+      preview = true,
+    },
     format = function(item)
       local ret = {}
       
@@ -97,133 +100,59 @@ function M.coach_picker(category)
       return ret
     end,
     preview = function(item)
-      local lines = {}
+      -- Return content with proper structure for snacks.picker
+      local content = {}
       
-      -- Header with command name
-      table.insert(lines, "╭─ " .. item.name .. " ─╮")
-      table.insert(lines, "")
+      -- Header
+      table.insert(content, "╭─ " .. item.name .. " ─╮")
+      table.insert(content, "")
       
-      -- Basic info section
-      table.insert(lines, "🔧 Keybind: " .. item.keybind)
-      table.insert(lines, "📂 Category: " .. item.category)
-      table.insert(lines, "🎯 Modes: " .. table.concat(item.modes, ", "))
-      table.insert(lines, "")
+      -- Basic info
+      table.insert(content, "🔧 Keybind: " .. item.keybind)
+      table.insert(content, "📂 Category: " .. item.category)
+      table.insert(content, "🎯 Modes: " .. table.concat(item.modes, ", "))
+      table.insert(content, "")
       
-      -- What it does section
-      table.insert(lines, "📖 What it does:")
+      -- Explanation
+      table.insert(content, "📖 What it does:")
+      table.insert(content, item.explanation or "No explanation available")
+      table.insert(content, "")
       
-      -- Word wrap long explanations
-      local explanation = item.explanation or "No explanation available"
-      local words = {}
-      for word in explanation:gmatch("%S+") do
-        table.insert(words, word)
-      end
-      
-      local current_line = ""
-      for _, word in ipairs(words) do
-        if string.len(current_line .. " " .. word) > 70 then
-          table.insert(lines, current_line)
-          current_line = word
-        else
-          current_line = current_line == "" and word or current_line .. " " .. word
-        end
-      end
-      if current_line ~= "" then
-        table.insert(lines, current_line)
-      end
-      table.insert(lines, "")
-      
-      -- Beginner tip section
+      -- Beginner tip
       if item.beginner_tip then
-        table.insert(lines, "💡 Beginner Tip:")
-        
-        -- Word wrap beginner tip
-        local tip_words = {}
-        for word in item.beginner_tip:gmatch("%S+") do
-          table.insert(tip_words, word)
-        end
-        
-        local tip_line = ""
-        for _, word in ipairs(tip_words) do
-          if string.len(tip_line .. " " .. word) > 70 then
-            table.insert(lines, tip_line)
-            tip_line = word
-          else
-            tip_line = tip_line == "" and word or tip_line .. " " .. word
-          end
-        end
-        if tip_line ~= "" then
-          table.insert(lines, tip_line)
-        end
-        table.insert(lines, "")
+        table.insert(content, "💡 Beginner Tip:")
+        table.insert(content, item.beginner_tip)
+        table.insert(content, "")
       end
       
-      -- When to use section
+      -- When to use
       if item.when_to_use then
-        table.insert(lines, "⏰ When to use:")
-        
-        -- Word wrap when_to_use
-        local when_words = {}
-        for word in item.when_to_use:gmatch("%S+") do
-          table.insert(when_words, word)
-        end
-        
-        local when_line = ""
-        for _, word in ipairs(when_words) do
-          if string.len(when_line .. " " .. word) > 70 then
-            table.insert(lines, when_line)
-            when_line = word
-          else
-            when_line = when_line == "" and word or when_line .. " " .. word
-          end
-        end
-        if when_line ~= "" then
-          table.insert(lines, when_line)
-        end
-        table.insert(lines, "")
+        table.insert(content, "⏰ When to use:")
+        table.insert(content, item.when_to_use)
+        table.insert(content, "")
       end
       
-      -- Examples section
+      -- Examples
       if item.examples and #item.examples > 0 then
-        table.insert(lines, "📝 Examples:")
+        table.insert(content, "📝 Examples:")
         for _, example in ipairs(item.examples) do
-          table.insert(lines, "  • " .. example)
+          table.insert(content, "  • " .. example)
         end
-        table.insert(lines, "")
+        table.insert(content, "")
       end
       
-      -- Context notes section
+      -- Context notes
       if item.context_notes then
-        table.insert(lines, "🌐 Context Notes:")
+        table.insert(content, "🌐 Context Notes:")
         for context, note in pairs(item.context_notes) do
-          local formatted_note = context .. ": " .. note
-          
-          -- Word wrap context notes
-          if string.len(formatted_note) > 70 then
-            local context_words = {}
-            for word in formatted_note:gmatch("%S+") do
-              table.insert(context_words, word)
-            end
-            
-            local context_line = ""
-            for _, word in ipairs(context_words) do
-              if string.len(context_line .. " " .. word) > 68 then -- Leave space for indentation
-                table.insert(lines, "  " .. context_line)
-                context_line = word
-              else
-                context_line = context_line == "" and word or context_line .. " " .. word
-              end
-            end
-            if context_line ~= "" then
-              table.insert(lines, "  " .. context_line)
-            end
-          else
-            table.insert(lines, "  " .. formatted_note)
-          end
+          table.insert(content, "  " .. context .. ": " .. note)
         end
       end
       
-      return lines
+      return {
+        lines = content,
+        ft = "markdown"
+      }
     end,
     confirm = function(picker, item)
       picker:close()
