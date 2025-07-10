@@ -57,31 +57,54 @@ function M.coach_picker(category)
   
   -- Format commands for snacks.picker
   local items = {}
-  for _, cmd in ipairs(cmd_list) do
-    table.insert(items, {
-      text = cmd.name or "",
-      keybind = cmd.keybind or "",
-      explanation = cmd.explanation or "",
-      category = cmd.category or "unknown",
-      modes = cmd.modes or {},
-      beginner_tip = cmd.beginner_tip,
-      when_to_use = cmd.when_to_use,
-      examples = cmd.examples,
-      context_notes = cmd.context_notes,
-    })
+  for i, cmd in ipairs(cmd_list) do
+    if not cmd then
+      print("WARNING: Command " .. i .. " is nil")
+    else
+      table.insert(items, {
+        text = cmd.name or "",
+        keybind = cmd.keybind or "",
+        explanation = cmd.explanation or "",
+        category = cmd.category or "unknown",
+        modes = cmd.modes or {},
+        beginner_tip = cmd.beginner_tip,
+        when_to_use = cmd.when_to_use,
+        examples = cmd.examples,
+        context_notes = cmd.context_notes,
+      })
+    end
   end
+  
+  print("DEBUG: Created " .. #items .. " items for picker")
   
   snacks.picker.pick({
     source = "vim-coach",
     items = items,
     title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
     format = function(item)
-      return string.format("%-20s %-15s %s", 
-        item.text or "", 
-        item.keybind or "", 
-        (item.explanation or ""):sub(1, 80) .. (string.len(item.explanation or "") > 80 and "..." or ""))
+      -- Debug protection against nil items
+      if not item then
+        return "ERROR: nil item"
+      end
+      
+      local text = item.text or ""
+      local keybind = item.keybind or ""
+      local explanation = item.explanation or ""
+      
+      -- Safely truncate explanation
+      local truncated = explanation
+      if #explanation > 80 then
+        truncated = explanation:sub(1, 80) .. "..."
+      end
+      
+      return string.format("%-20s %-15s %s", text, keybind, truncated)
     end,
     preview = function(item)
+      -- Debug protection against nil items
+      if not item then
+        return { lines = {"ERROR: nil item in preview"}, ft = "text" }
+      end
+      
       local lines = {}
       
       table.insert(lines, "╭─ " .. (item.text or "Unknown Command") .. " ─╮")
@@ -159,14 +182,14 @@ function M.coach_picker(category)
     end,
     on_select = function(item)
       -- Copy keybind to clipboard if available
-      if item.keybind and item.keybind ~= "" then
+      if item and item.keybind and item.keybind ~= "" then
         vim.fn.setreg("+", item.keybind)
         vim.notify("Copied '" .. item.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
       end
     end,
     actions = {
       ["<C-y>"] = function(item)
-        if item.keybind and item.keybind ~= "" then
+        if item and item.keybind and item.keybind ~= "" then
           vim.fn.setreg("+", item.keybind)
           vim.notify("Copied '" .. item.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
         end
