@@ -14,10 +14,17 @@ if vim.fn.has('nvim-0.7') == 0 then
   return
 end
 
--- Check required dependencies
-local has_telescope = pcall(require, 'telescope')
-if not has_telescope then
-  vim.api.nvim_err_writeln('vim-coach.nvim requires telescope.nvim')
+-- Check for snacks.nvim dependency
+local has_snacks = pcall(require, 'snacks')
+if not has_snacks then
+  vim.api.nvim_err_writeln('vim-coach.nvim requires snacks.nvim')
+  return
+end
+
+-- Check if snacks.picker is available
+local snacks = require('snacks')
+if not snacks.picker then
+  vim.api.nvim_err_writeln('vim-coach.nvim requires snacks.nvim with picker support enabled')
   return
 end
 

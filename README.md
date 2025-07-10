@@ -10,12 +10,13 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ## ✨ Features
 
-- 🔍 **Fuzzy searchable** - Find any command instantly with Telescope integration
+- 🔍 **Fuzzy searchable** - Find any command instantly with modern snacks.picker interface
 - 📚 **120+ commands** - Comprehensive coverage of Vim motions, editing, visual mode, and plugins
 - 🎓 **Beginner-focused** - Detailed explanations with "when to use" guidance
 - 🌐 **Context-aware** - Different explanations for file vs explorer vs git contexts
 - 💡 **Coaching tips** - Learn WHY and WHEN to use each command
 - 📋 **Copy keybinds** - Press Enter or Ctrl+Y to copy commands to clipboard
+- 📱 **Modern UI** - Clean interface with text wrapping and enhanced preview
 - 🎯 **Categorized** - Browse by command type (motions, editing, visual, plugins)
 
 ## 🎪 Demo
@@ -36,8 +37,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 {
   "shahshlok/vim-coach.nvim",
   dependencies = {
-    "nvim-telescope/telescope.nvim",
-    "nvim-lua/plenary.nvim",
+    "folke/snacks.nvim",
   },
   config = function()
     require("vim-coach").setup()
@@ -54,8 +54,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 use {
   "shahshlok/vim-coach.nvim",
   requires = {
-    "nvim-telescope/telescope.nvim",
-    "nvim-lua/plenary.nvim",
+    "folke/snacks.nvim",
   },
   config = function()
     require("vim-coach").setup()
@@ -66,8 +65,7 @@ use {
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-lua/plenary.nvim'
+Plug 'folke/snacks.nvim'
 Plug 'shahshlok/vim-coach.nvim'
 
 " In your init.lua or init.vim:
@@ -174,8 +172,7 @@ Delete Line (dd)
 ## 🛠️ Requirements
 
 - Neovim >= 0.7
-- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
+- [snacks.nvim](https://github.com/folke/snacks.nvim) (with picker support)
 
 ## 🤝 Contributing
 
@@ -214,7 +211,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Built with [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+- Built with [snacks.nvim](https://github.com/folke/snacks.nvim)
 - Inspired by the need for better Vim learning resources
 - Created for the Neovim community
 
