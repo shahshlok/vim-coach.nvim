@@ -72,10 +72,8 @@ function M.coach_picker(category)
   end
   
   snacks.picker.pick({
-    source = {
-      name = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
-      items = items,
-    },
+    source = items,
+    title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
     format = function(item)
       return string.format("%-20s %-15s %s", 
         item.text or "", 
