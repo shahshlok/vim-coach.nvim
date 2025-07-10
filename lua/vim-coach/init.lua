@@ -55,125 +55,83 @@ function M.coach_picker(category)
   
   local snacks = require("snacks")
   
-  -- Format commands for snacks.picker
+  -- Format commands for snacks.picker with flattened structure
   local items = {}
   for i, cmd in ipairs(cmd_list) do
-    if not cmd then
-      print("WARNING: Command " .. i .. " is nil")
-    else
+    if cmd then
       table.insert(items, {
         idx = i,
         name = cmd.name or "Unknown Command",
-        keybind = cmd.keybind or "",
+        keybind = cmd.keybind or "N/A",
+        explanation = cmd.explanation or "No explanation",
+        beginner_tip = cmd.beginner_tip,
+        when_to_use = cmd.when_to_use,
+        examples = cmd.examples,
+        context_notes = cmd.context_notes,
+        modes = cmd.modes or {},
+        category = cmd.category or category,
         text = (cmd.name or "Unknown Command") .. " (" .. (cmd.keybind or "N/A") .. ")",
-        cmd = cmd, -- Store original command data
       })
     end
   end
   
   snacks.picker({
     title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
-    layout = {
-      preset = "default",
-      preview = true,
-    },
     items = items,
-    format = function(item, _)
-      -- Debug protection against nil items
-      if not item or not item.cmd then
-        return {{ "ERROR: malformed item", "ErrorMsg" }}
-      end
+    format = function(item)
+      local ret = {}
       
-      local cmd = item.cmd
-      local name = cmd.name or "Unknown"
-      local keybind = cmd.keybind or "N/A"
-      local explanation = cmd.explanation or "No explanation"
+      -- Name with proper highlight
+      ret[#ret + 1] = { string.format("%-25s", item.name), "SnacksPickerLabel" }
       
-      -- Safely truncate explanation
-      local truncated = explanation
+      -- Keybind
+      ret[#ret + 1] = { string.format("%-12s", item.keybind), "SnacksPickerSpecial" }
+      
+      -- Truncated explanation
+      local explanation = item.explanation or ""
       if #explanation > 50 then
-        truncated = explanation:sub(1, 50) .. "..."
+        explanation = explanation:sub(1, 50) .. "..."
       end
+      ret[#ret + 1] = { explanation, "SnacksPickerComment" }
       
-      return {
-        { string.format("%-25s", name), "Title" },
-        { string.format("%-12s", keybind), "Special" },
-        { truncated, "Comment" },
-      }
+      return ret
     end,
-    preview = function(item, _)
-      -- Debug protection against nil items
-      if not item or not item.cmd then
-        return { "ERROR: malformed item in preview" }
-      end
-      
-      local cmd = item.cmd
+    preview = function(item)
       local lines = {}
       
-      table.insert(lines, "╭─ " .. (cmd.name or "Unknown Command") .. " ─╮")
+      table.insert(lines, "╭─ " .. item.name .. " ─╮")
       table.insert(lines, "")
-      table.insert(lines, "🔧 Keybind: " .. (cmd.keybind or "N/A"))
-      table.insert(lines, "📂 Category: " .. (cmd.category or "unknown"))
-      table.insert(lines, "🎯 Modes: " .. table.concat(cmd.modes or {}, ", "))
+      table.insert(lines, "🔧 Keybind: " .. item.keybind)
+      table.insert(lines, "📂 Category: " .. item.category)
+      table.insert(lines, "🎯 Modes: " .. table.concat(item.modes, ", "))
       table.insert(lines, "")
       table.insert(lines, "📖 What it does:")
-      
-      -- Wrap long explanations
-      local explanation = cmd.explanation or "No explanation available"
-      local wrapped_explanation = {}
-      for line in explanation:gmatch("[^\r\n]+") do
-        if string.len(line) > 70 then
-          -- Simple word wrapping
-          local words = {}
-          for word in line:gmatch("%S+") do
-            table.insert(words, word)
-          end
-          
-          local current_line = ""
-          for _, word in ipairs(words) do
-            if string.len(current_line .. " " .. word) > 70 then
-              table.insert(wrapped_explanation, current_line)
-              current_line = word
-            else
-              current_line = current_line == "" and word or current_line .. " " .. word
-            end
-          end
-          if current_line ~= "" then
-            table.insert(wrapped_explanation, current_line)
-          end
-        else
-          table.insert(wrapped_explanation, line)
-        end
-      end
-      
-      for _, line in ipairs(wrapped_explanation) do
-        table.insert(lines, line)
-      end
+      table.insert(lines, item.explanation)
       table.insert(lines, "")
       
-      if cmd.beginner_tip then
+      if item.beginner_tip then
         table.insert(lines, "💡 Beginner Tip:")
-        table.insert(lines, cmd.beginner_tip)
+        table.insert(lines, item.beginner_tip)
         table.insert(lines, "")
       end
       
-      if cmd.when_to_use then
+      if item.when_to_use then
         table.insert(lines, "⏰ When to use:")
-        table.insert(lines, cmd.when_to_use)
+        table.insert(lines, item.when_to_use)
         table.insert(lines, "")
       end
       
-      if cmd.examples then
+      if item.examples then
         table.insert(lines, "📝 Examples:")
-        for _, example in ipairs(cmd.examples) do
+        for _, example in ipairs(item.examples) do
           table.insert(lines, "  • " .. example)
         end
         table.insert(lines, "")
       end
       
-      if cmd.context_notes then
+      if item.context_notes then
         table.insert(lines, "🌐 Context Notes:")
-        for context, note in pairs(cmd.context_notes) do
+        for context, note in pairs(item.context_notes) do
           table.insert(lines, "  " .. context .. ": " .. note)
         end
       end
@@ -181,20 +139,17 @@ function M.coach_picker(category)
       return lines
     end,
     confirm = function(picker, item)
-      -- Copy keybind to clipboard if available
-      if item and item.cmd and item.cmd.keybind and item.cmd.keybind ~= "" then
-        picker:close()
-        vim.fn.setreg("+", item.cmd.keybind)
-        vim.notify("Copied '" .. item.cmd.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
-      else
-        picker:close()
+      picker:close()
+      if item.keybind and item.keybind ~= "N/A" and item.keybind ~= "" then
+        vim.fn.setreg("+", item.keybind)
+        vim.notify("Copied '" .. item.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
       end
     end,
     actions = {
       ["<C-y>"] = function(picker, item)
-        if item and item.cmd and item.cmd.keybind and item.cmd.keybind ~= "" then
-          vim.fn.setreg("+", item.cmd.keybind)
-          vim.notify("Copied '" .. item.cmd.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
+        if item.keybind and item.keybind ~= "N/A" and item.keybind ~= "" then
+          vim.fn.setreg("+", item.keybind)
+          vim.notify("Copied '" .. item.keybind .. "' to clipboard! 📋", vim.log.levels.INFO)
         end
       end,
     },
