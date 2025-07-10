@@ -32,6 +32,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim) (Recommended)
 
+**With telescope.nvim (default):**
 ```lua
 {
   "shahshlok/vim-coach.nvim",
@@ -48,8 +49,27 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 }
 ```
 
+**With snacks.nvim:**
+```lua
+{
+  "shahshlok/vim-coach.nvim",
+  dependencies = {
+    "folke/snacks.nvim",
+  },
+  config = function()
+    require("vim-coach").setup({
+      picker = "snacks", -- Optional: auto-detection works too
+    })
+  end,
+  keys = {
+    { "<leader>?", "<cmd>VimCoach<cr>", desc = "Vim Coach" },
+  },
+}
+```
+
 ### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
+**With telescope.nvim:**
 ```lua
 use {
   "shahshlok/vim-coach.nvim",
@@ -63,8 +83,24 @@ use {
 }
 ```
 
+**With snacks.nvim:**
+```lua
+use {
+  "shahshlok/vim-coach.nvim",
+  requires = {
+    "folke/snacks.nvim",
+  },
+  config = function()
+    require("vim-coach").setup({
+      picker = "snacks",
+    })
+  end
+}
+```
+
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
+**With telescope.nvim:**
 ```vim
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -72,6 +108,15 @@ Plug 'shahshlok/vim-coach.nvim'
 
 " In your init.lua or init.vim:
 lua require('vim-coach').setup()
+```
+
+**With snacks.nvim:**
+```vim
+Plug 'folke/snacks.nvim'
+Plug 'shahshlok/vim-coach.nvim'
+
+" In your init.lua or init.vim:
+lua require('vim-coach').setup({ picker = "snacks" })
 ```
 
 ## 🚀 Usage
@@ -110,6 +155,9 @@ lua require('vim-coach').setup()
 
 ```lua
 require("vim-coach").setup({
+  -- Picker backend: "auto" (default), "telescope", "snacks"
+  picker = "auto",
+  
   -- Disable default keymaps
   -- Set vim.g.vim_coach_no_default_keymaps = 1 before setup
   
@@ -121,6 +169,26 @@ require("vim-coach").setup({
     copy_keymap = "<C-y>",
     close = "<Esc>",
   },
+})
+```
+
+### Picker Backends
+
+vim-coach.nvim supports multiple picker backends:
+
+- **auto** (default): Automatically detects and uses the first available picker (telescope → snacks)
+- **telescope**: Uses telescope.nvim (requires telescope.nvim + plenary.nvim)
+- **snacks**: Uses snacks.nvim picker (requires snacks.nvim)
+
+```lua
+-- Force telescope backend
+require("vim-coach").setup({
+  picker = "telescope",
+})
+
+-- Force snacks backend
+require("vim-coach").setup({
+  picker = "snacks",
 })
 ```
 
@@ -174,8 +242,9 @@ Delete Line (dd)
 ## 🛠️ Requirements
 
 - Neovim >= 0.7
-- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
+- One of the following picker backends:
+  - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) + [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
+  - [snacks.nvim](https://github.com/folke/snacks.nvim) (with picker support)
 
 ## 🤝 Contributing
 
