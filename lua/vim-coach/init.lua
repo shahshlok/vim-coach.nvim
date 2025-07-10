@@ -100,7 +100,7 @@ function M.coach_picker(category)
       return ret
     end,
     preview = function(item)
-      -- Return content with proper structure for snacks.picker
+      -- Return simple string content for snacks.picker
       local content = {}
       
       -- Header
@@ -149,10 +149,8 @@ function M.coach_picker(category)
         end
       end
       
-      return {
-        lines = content,
-        ft = "markdown"
-      }
+      -- Return as simple string joined by newlines
+      return table.concat(content, "\n")
     end,
     confirm = function(picker, item)
       picker:close()
