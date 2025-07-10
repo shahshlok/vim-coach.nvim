@@ -132,6 +132,15 @@ function M.coach_picker(category)
     title = "Vim Coach - " .. string.upper(category:sub(1,1)) .. category:sub(2) .. " Commands",
     items = items,
     preview = "preview",
+    win = {
+      preview = {
+        wo = {
+          wrap = true,
+          linebreak = true,
+          breakindent = true,
+        }
+      }
+    },
     format = function(item)
       local ret = {}
       
