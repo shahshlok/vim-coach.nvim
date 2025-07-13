@@ -99,6 +99,10 @@ Default configuration: >
         border = "rounded",
         title_pos = "center",
       },
+      distro_commands = {
+	lazyvim = false,
+	nvchad = false,
+      },
       keymaps = {
         copy_keymap = "<C-y>",
         close = "<Esc>",
@@ -145,6 +149,11 @@ To add new commands, edit the files in lua/vim-coach/commands/:
 • editing.lua - Text manipulation commands  
 • visual.lua - Visual mode commands
 • plugins.lua - Plugin-specific commands
+
+To add distro-specific commands, edit/add files in
+lua/vim-coach/commands/distros/:
+• lazyvim.lua - Lazyvim-specific commands
+• nvchad.lua - Nvchad-specific commands
 
 Command format: >
     {
