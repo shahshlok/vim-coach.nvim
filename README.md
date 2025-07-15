@@ -218,7 +218,8 @@ We welcome contributions! Here's how you can help:
 
 ### Adding New Commands
 
-1. Edit the appropriate file in `lua/vim-coach/commands/`
+1. Add/Edit the appropriate file in `lua/vim-coach/commands/` or `lua/vim-coach/commands/distros/*` (for distro-specific
+   commands).
 2. Follow the existing format:
 
 ```lua
