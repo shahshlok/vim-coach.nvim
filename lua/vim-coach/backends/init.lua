@@ -7,9 +7,6 @@ M.backends = {
 	snacks = "vim-coach.backends.snacks",
 }
 
--- Default backend priority (first available will be used)
-M.backend_priority = { "snacks", "telescope" }
-
 -- Currently active backend
 M.current_backend = nil
 

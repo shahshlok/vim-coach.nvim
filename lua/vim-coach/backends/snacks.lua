@@ -19,7 +19,7 @@ function M.show_picker(opts)
 
 	local title = opts.title or "Vim Coach"
 	local category = opts.category or "all"
-	local commands = require("vim-coach").get_commands_by_category(category)
+	local commands = require("vim-coach").get_commands(category)
 
 	if #commands == 0 then
 		vim.notify("No commands found", vim.log.levels.WARN, { title = "vim-coach.nvim" })

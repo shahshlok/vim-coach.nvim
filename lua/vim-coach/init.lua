@@ -64,21 +64,26 @@ end
 function M.setup(opts)
 	opts = opts or {}
 
+	-- Merge user config with defaults
+	config = vim.tbl_deep_extend("force", config, opts)
+
 	-- Notify user about selected backend
-	if opts.picker ~= "snacks" and opts.picker ~= "telescope" then
+	if config.picker ~= "snacks" and config.picker ~= "telescope" then
 		vim.notify(
-			"Selected picker: " .. opts.picker .. " isn't available. Using default or installed picker",
+			"Selected picker: " .. config.picker .. " isn't available. Using default or installed picker",
 			vim.log.levels.INFO,
 			{ title = "vim-coach.nvim" }
 		)
-		opts.picker = "snacks"
+		config.picker = "snacks"
 		require("vim-coach.backends").set_backend("snacks")
+	else
+		require("vim-coach.backends").set_backend(config.picker)
 	end
 
 	-- Check for at least one picker backend
-	local has_picker = pcall(require, opts.picker)
+	local has_picker = pcall(require, config.picker)
 	if has_picker then
-		if opts.picker == "snacks" then
+		if config.picker == "snacks" then
 			local has_snacks_picker = has_picker and pcall(function()
 				return require("snacks").picker
 			end)
@@ -93,15 +98,12 @@ function M.setup(opts)
 		end
 	else
 		vim.notify(
-			"vim-coach.nvim requires " .. opts.picker .. " to be installed",
+			"vim-coach.nvim requires " .. config.picker .. " to be installed",
 			vim.log.levels.ERROR,
 			{ title = "vim-coach.nvim" }
 		)
 		return
 	end
-
-	-- Merge user config with defaults
-	config = vim.tbl_deep_extend("force", config, opts)
 
 	-- Optional: Add user commands if not already added by plugin file
 	if not vim.fn.exists(":VimCoach") then
@@ -111,14 +113,7 @@ function M.setup(opts)
 		end, {
 			nargs = "?",
 			complete = function()
-				local categories = { "all", "motions", "editing", "visual", "plugins" }
-				if config.distro_commands.lazyvim then
-					table.insert(categories, "lazyvim")
-				end
-				if config.distro_commands.nvchad then
-					table.insert(categories, "nvchad")
-				end
-				return categories
+				return M.get_categories()
 			end,
 		})
 	end

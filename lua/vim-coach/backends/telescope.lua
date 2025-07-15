@@ -22,7 +22,7 @@ function M.show_picker(opts)
 
 	local title = opts.title or "Vim Coach"
 	local category = opts.category or "all"
-	local commands = require("vim-coach").get_commands_by_category(category)
+	local commands = require("vim-coach").get_commands(category)
 
 	-- Custom entry maker for better display
 	local function make_entry(command)
@@ -131,12 +131,7 @@ function M.show_picker(opts)
 				end
 
 				vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, preview_content)
-				-- vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "markdown")
 				vim.api.nvim_set_option_value("filetype", "text", { buf = self.state.bufnr })
-				vim.api.nvim_set_option_value("wrap", true, { buf = self.state.bufnr })
-				vim.api.nvim_set_option_value("linebreak", true, { buf = self.state.bufnr })
-				vim.api.nvim_set_option_value("breakindent", true, { buf = self.state.bufnr })
-				-- vim.api.set_option("wrap", true, { buf = self.state.bufnr })
 			end,
 		})
 	end
