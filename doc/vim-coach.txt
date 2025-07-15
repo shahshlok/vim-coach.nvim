@@ -42,9 +42,15 @@ Prerequisites:
 
 With lazy.nvim: >
     {
-      "your-username/vim-coach.nvim",
+      "shahshlok/vim-coach.nvim",
       dependencies = {
+        -- Install one of preferred picker
+        -- Snacks
         "folke/snacks.nvim",
+        -- OR
+        -- Telescope
+        "nvim-telescope/telescope.nvim",
+        "nvim-lua/plenary.nvim",
       },
       config = function()
         require("vim-coach").setup()
@@ -99,6 +105,7 @@ Default configuration: >
         border = "rounded",
         title_pos = "center",
       },
+      picker = "snacks", -- "snacks" (Default) | "telescope"
       distro_commands = {
 	lazyvim = false,
 	nvchad = false,
