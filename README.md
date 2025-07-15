@@ -28,7 +28,7 @@ beginner tips, and context-aware guidance. Perfect for absolute beginners who wa
 <leader>he → Editing commands (i,a,d,c,y,p,etc.)
 <leader>hv → Visual mode commands
 <leader>hp → Plugin-specific commands
-<leader>hl → Lazvim* commands (when enabled)
+<leader>hl → Lazyvim* commands (when enabled)
 <leader>hn → Nvchad* commands (when enabled)
 ```
 
@@ -103,7 +103,7 @@ lua require('vim-coach').setup()
 | `:VimCoach editing` | Editing commands only |
 | `:VimCoach visual`  | Visual mode commands  |
 | `:VimCoach plugins` | Plugin commands       |
-| `:VimCoach lazyvim` | Lazvim\* commands     |
+| `:VimCoach lazyvim` | Lazyvim\* commands    |
 | `:VimCoach nvchad`  | Nvchad\* commands     |
 | `:Coach`            | Alias for `:VimCoach` |
 
@@ -116,7 +116,7 @@ lua require('vim-coach').setup()
 | `<leader>he` | `:VimCoach editing` | Editing commands        |
 | `<leader>hv` | `:VimCoach visual`  | Visual mode commands    |
 | `<leader>hp` | `:VimCoach plugins` | Plugin commands         |
-| `<leader>hl` | `:VimCoach lazvim`  | Lazyvim\* commands      |
+| `<leader>hl` | `:VimCoach lazyvim` | Lazyvim\* commands      |
 | `<leader>hn` | `:VimCoach nvchad`  | Nvchad\* commands       |
 | `<leader>hh` | `:VimCoach all`     | All commands            |
 
