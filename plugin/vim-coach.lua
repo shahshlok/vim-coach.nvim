@@ -11,19 +11,17 @@ vim.g.loaded_vim_coach = 1
 -- Check if Neovim version is supported
 if vim.fn.has("nvim-0.7") == 0 then
 	vim.notify("vim-coach.nvim requires Neovim >= 0.7", vim.log.levels.ERROR, { title = "vim-coach.nvim" })
-	-- vim.api.nvim_err_writeln('vim-coach.nvim requires Neovim >= 0.7')
 	return
 end
 
 -- Create user commands
 vim.api.nvim_create_user_command("VimCoach", function(args)
 	local category = args.args and args.args ~= "" and args.args or "all"
-	-- require("vim-coach").coach_picker(category)
 	require("vim-coach.backends").show_picker({ category = category })
 end, {
 	nargs = "?",
 	complete = function()
-		return { "all", "motions", "editing", "visual", "plugins" }
+		return require("vim-coach").get_categories()
 	end,
 	desc = "Open Vim Coach command reference",
 })
@@ -34,7 +32,7 @@ vim.api.nvim_create_user_command("Coach", function(args)
 end, {
 	nargs = "?",
 	complete = function()
-		return { "all", "motions", "editing", "visual", "plugins" }
+		return require("vim-coach").get_categories()
 	end,
 	desc = "Open Vim Coach command reference (alias)",
 })
@@ -46,5 +44,11 @@ if vim.g.vim_coach_no_default_keymaps ~= 1 then
 	vim.keymap.set("n", "<leader>he", "<cmd>VimCoach editing<cr>", { desc = "Vim Editing Help" })
 	vim.keymap.set("n", "<leader>hv", "<cmd>VimCoach visual<cr>", { desc = "Vim Visual Mode Help" })
 	vim.keymap.set("n", "<leader>hp", "<cmd>VimCoach plugins<cr>", { desc = "Plugin Commands Help" })
+	if require("vim-coach").get_categories()["lazyvim"] then
+		vim.keymap.set("n", "<leader>hl", "<cmd>VimCoach lazyvim<cr>", { desc = "Lazyvim Commands Help" })
+	end
+	if require("vim-coach").get_categories()["nvchad"] then
+		vim.keymap.set("n", "<leader>hn", "<cmd>VimCoach nvchad<cr>", { desc = "Nvchad Commands Help" })
+	end
 	vim.keymap.set("n", "<leader>hh", "<cmd>VimCoach all<cr>", { desc = "All Commands Help" })
 end

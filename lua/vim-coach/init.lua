@@ -88,7 +88,6 @@ function M.setup(opts)
 					vim.log.levels.ERROR,
 					{ title = "vim-coach.nvim" }
 				)
-				-- vim.api.nvim_err_writeln('vim-coach.nvim requires snacks.nvim with picker support enabled')
 				return
 			end
 		end
@@ -98,8 +97,6 @@ function M.setup(opts)
 			vim.log.levels.ERROR,
 			{ title = "vim-coach.nvim" }
 		)
-		-- vim.api.nvim_err_writeln("vim-coach.nvim requires either telescope.nvim or snacks.nvim with picker support")
-
 		return
 	end
 
@@ -127,6 +124,15 @@ function M.setup(opts)
 	end
 end
 
+-- Get all categories
+local function get_categories()
+	local categories = {}
+	for category, _ in pairs(commands) do
+		table.insert(categories, category)
+	end
+	return categories
+end
+
 -- Get plugin info
 function M.info()
 	return {
@@ -135,12 +141,13 @@ function M.info()
 		description = "A comprehensive Vim command reference for beginners",
 		total_commands = #get_all_commands(),
 		categories = vim.tbl_keys(commands),
-		picker = "snacks.nvim(default)", -- "telescope.nvim"
+		picker = "snacks.nvim (default)", -- "telescope.nvim"
 	}
 end
 
 -- Export functions for external use
 M.get_commands = get_commands_by_category
 M.get_all_commands = get_all_commands
+M.get_categories = get_categories
 
 return M

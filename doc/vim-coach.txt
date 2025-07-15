@@ -4,7 +4,7 @@
 
 Author: Shlok Shah
 License: MIT
-Version: 2.0.0
+Version: 2.1.0
 
 ==============================================================================
 CONTENTS						*vim-coach-contents*
@@ -38,7 +38,7 @@ Features:
 
 Prerequisites:
 • Neovim >= 0.7
-• snacks.nvim (with picker support)
+• snacks.nvim (with picker support) or telescope.nvim
 
 With lazy.nvim: >
     {
@@ -68,6 +68,8 @@ Basic usage:
 • |<leader>he| - Editing commands only
 • |<leader>hv| - Visual mode commands
 • |<leader>hp| - Plugin commands
+• |<leader>hl| - Lazyvim* commands
+• |<leader>hn| - Nvchad* commands
 
 In the picker:
 • <Enter> - Copy keybind to clipboard
@@ -128,6 +130,8 @@ Default keymaps:				*vim-coach-keymaps*
 	<leader>he	Editing commands  
 	<leader>hv	Visual mode commands
 	<leader>hp	Plugin commands
+	<leader>hl	Lazyvim* commands
+	<leader>hn	NVchad* commands
 	<leader>hh	All commands
 
 ==============================================================================
@@ -179,7 +183,7 @@ Command format: >
 <
 
 Report bugs and feature requests at:
-https://github.com/your-username/vim-coach.nvim/issues
+https://github.com/shahshlok/vim-coach.nvim/issues
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:

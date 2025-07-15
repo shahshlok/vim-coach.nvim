@@ -28,6 +28,8 @@ beginner tips, and context-aware guidance. Perfect for absolute beginners who wa
 <leader>he → Editing commands (i,a,d,c,y,p,etc.)
 <leader>hv → Visual mode commands
 <leader>hp → Plugin-specific commands
+<leader>hl → Lazvim* commands (when enabled)
+<leader>hn → Nvchad* commands (when enabled)
 ```
 
 ## 📦 Installation
@@ -38,11 +40,15 @@ beginner tips, and context-aware guidance. Perfect for absolute beginners who wa
 {
   "shahshlok/vim-coach.nvim",
   dependencies = {
+    -- Install one of preferred picker
+    -- Snacks
     "folke/snacks.nvim",
+    -- OR
+    -- Telescope
+    "nvim-telescope/telescope.nvim",
+    "nvim-lua/plenary.nvim",
   },
-  config = function()
-    require("vim-coach").setup()
-  end,
+  opts = {},
   keys = {
     { "<leader>?", "<cmd>VimCoach<cr>", desc = "Vim Coach" },
   },
@@ -55,7 +61,13 @@ beginner tips, and context-aware guidance. Perfect for absolute beginners who wa
 use {
   "shahshlok/vim-coach.nvim",
   requires = {
+    -- Install one of preferred picker
+    -- Snacks
     "folke/snacks.nvim",
+    -- OR
+    -- Telescope
+    "nvim-telescope/telescope.nvim",
+    "nvim-lua/plenary.nvim",
   },
   config = function()
     require("vim-coach").setup()
@@ -66,7 +78,14 @@ use {
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
+-- Install one of preferred picker
+-- Snacks
 Plug 'folke/snacks.nvim'
+-- OR
+-- Telescope
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-lua/plenary.nvim'
+
 Plug 'shahshlok/vim-coach.nvim'
 
 " In your init.lua or init.vim:
@@ -84,6 +103,8 @@ lua require('vim-coach').setup()
 | `:VimCoach editing` | Editing commands only |
 | `:VimCoach visual`  | Visual mode commands  |
 | `:VimCoach plugins` | Plugin commands       |
+| `:VimCoach lazyvim` | Lazvim\* commands     |
+| `:VimCoach nvchad`  | Nvchad\* commands     |
 | `:Coach`            | Alias for `:VimCoach` |
 
 ### Default Keybindings
@@ -95,6 +116,8 @@ lua require('vim-coach').setup()
 | `<leader>he` | `:VimCoach editing` | Editing commands        |
 | `<leader>hv` | `:VimCoach visual`  | Visual mode commands    |
 | `<leader>hp` | `:VimCoach plugins` | Plugin commands         |
+| `<leader>hl` | `:VimCoach lazvim`  | Lazyvim\* commands      |
+| `<leader>hn` | `:VimCoach nvchad`  | Nvchad\* commands       |
 | `<leader>hh` | `:VimCoach all`     | All commands            |
 
 ### In the Picker
@@ -115,6 +138,11 @@ require("vim-coach").setup({
   window = {
     border = "rounded",
     title_pos = "center",
+  },
+  picker = "snacks", -- "snacks" (Default) | "telescope"
+  distro_commands = {
+    lazyvim = false,
+    nvchad = false,
   },
   keymaps = {
     copy_keymap = "<C-y>",
