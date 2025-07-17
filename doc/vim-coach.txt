@@ -68,8 +68,6 @@ Basic usage:
 • |<leader>he| - Editing commands only
 • |<leader>hv| - Visual mode commands
 • |<leader>hp| - Plugin commands
-• |<leader>hl| - Lazyvim* commands
-• |<leader>hn| - NvChad* commands
 
 In the picker:
 • <Enter> - Copy keybind to clipboard
@@ -88,8 +86,6 @@ In the picker:
 		• editing - Text manipulation (i,a,d,c,y,p,etc.)
 		• visual - Visual mode operations
 		• plugins - Plugin-specific commands
-		• lazyvim - Lazyvim* commands
-		• nvhcad - NvChad* commands
 
 		Examples: >
 		    :VimCoach
@@ -110,10 +106,6 @@ Default configuration: >
         title_pos = "center",
       },
       picker = "snacks", -- "snacks" (Default) | "telescope"
-      distro_commands = {
-	lazyvim = false,
-	nvchad = false,
-      },
       keymaps = {
         copy_keymap = "<C-y>",
         close = "<Esc>",
@@ -133,8 +125,6 @@ Default keymaps:				*vim-coach-keymaps*
 	<leader>he	Editing commands  
 	<leader>hv	Visual mode commands
 	<leader>hp	Plugin commands
-	<leader>hl	Lazyvim* commands
-	<leader>hn	NvChad* commands
 	<leader>hh	All commands
 
 To add custom commands or edit existing commands, pass the example table below to the
@@ -178,7 +168,7 @@ require("vim-coach").get_commands({category})	*vim-coach.get_commands()*
 require("vim-coach").get_all_commands()		*vim-coach.get_all_commands()*
 		Get all commands as a flat list.
 
-require("vim-coach").register_commands()		*vim-coach.register_commands()*
+require("vim-coach").register_commands({commands})		*vim-coach.register_commands()*
 		Adds and/or edits custom user commands.
 
 ==============================================================================

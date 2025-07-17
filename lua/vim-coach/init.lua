@@ -18,10 +18,6 @@ local config = {
 		title_pos = "center",
 	},
 	picker = "snacks", -- "snacks" (Default) | "telescope"
-	distro_commands = {
-		lazyvim = false,
-		nvchad = false,
-	},
 	keymaps = {
 		copy_keymap = "<C-y>",
 		close = "<Esc>",
@@ -32,12 +28,6 @@ local config = {
 -- Merge all commands into one searchable database
 local function get_all_commands()
 	local all_commands = {}
-	if config.distro_commands.lazyvim then
-		commands["lazyvim"] = require("vim-coach.commands.distros.lazyvim")
-	end
-	if config.distro_commands.nvchad then
-		commands["nvchad"] = require("vim-coach.commands.distros.lazyvim")
-	end
 	for category, cmd_list in pairs(commands) do
 		for _, cmd in ipairs(cmd_list) do
 			cmd.category = category

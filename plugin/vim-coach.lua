@@ -44,11 +44,5 @@ if vim.g.vim_coach_no_default_keymaps ~= 1 then
 	vim.keymap.set("n", "<leader>he", "<cmd>VimCoach editing<cr>", { desc = "Vim Editing Help" })
 	vim.keymap.set("n", "<leader>hv", "<cmd>VimCoach visual<cr>", { desc = "Vim Visual Mode Help" })
 	vim.keymap.set("n", "<leader>hp", "<cmd>VimCoach plugins<cr>", { desc = "Plugin Commands Help" })
-	if require("vim-coach").get_categories()["lazyvim"] then
-		vim.keymap.set("n", "<leader>hl", "<cmd>VimCoach lazyvim<cr>", { desc = "Lazyvim Commands Help" })
-	end
-	if require("vim-coach").get_categories()["nvchad"] then
-		vim.keymap.set("n", "<leader>hn", "<cmd>VimCoach nvchad<cr>", { desc = "Nvchad Commands Help" })
-	end
 	vim.keymap.set("n", "<leader>hh", "<cmd>VimCoach all<cr>", { desc = "All Commands Help" })
 end

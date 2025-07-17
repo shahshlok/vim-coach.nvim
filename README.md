@@ -28,8 +28,6 @@ beginner tips, and context-aware guidance. Perfect for absolute beginners who wa
 <leader>he → Editing commands (i,a,d,c,y,p,etc.)
 <leader>hv → Visual mode commands
 <leader>hp → Plugin-specific commands
-<leader>hl → Lazyvim* commands (when enabled)
-<leader>hn → NvChad* commands (when enabled)
 ```
 
 ## 📦 Installation
@@ -103,8 +101,6 @@ lua require('vim-coach').setup()
 | `:VimCoach editing` | Editing commands only |
 | `:VimCoach visual`  | Visual mode commands  |
 | `:VimCoach plugins` | Plugin commands       |
-| `:VimCoach lazyvim` | Lazyvim\* commands    |
-| `:VimCoach nvchad`  | NvChad\* commands     |
 | `:Coach`            | Alias for `:VimCoach` |
 
 ### Default Keybindings
@@ -116,8 +112,6 @@ lua require('vim-coach').setup()
 | `<leader>he` | `:VimCoach editing` | Editing commands        |
 | `<leader>hv` | `:VimCoach visual`  | Visual mode commands    |
 | `<leader>hp` | `:VimCoach plugins` | Plugin commands         |
-| `<leader>hl` | `:VimCoach lazyvim` | Lazyvim\* commands      |
-| `<leader>hn` | `:VimCoach nvchad`  | NvChad\* commands       |
 | `<leader>hh` | `:VimCoach all`     | All commands            |
 
 ### In the Picker
@@ -140,10 +134,6 @@ require("vim-coach").setup({
     title_pos = "center",
   },
   picker = "snacks", -- "snacks" (Default) | "telescope"
-  distro_commands = {
-    lazyvim = false,
-    nvchad = false,
-  },
   keymaps = {
     copy_keymap = "<C-y>",
     close = "<Esc>",
@@ -224,14 +214,12 @@ Delete Line (dd)
 
 ## 📚 Command Categories
 
-| Category     | Count | Description                                           |
-| ------------ | ----- | ----------------------------------------------------- |
-| **Motions**  | 20+   | Movement commands (h,j,k,l,w,b,f,etc.)                |
-| **Editing**  | 30+   | Text manipulation (i,a,d,c,y,p,etc.)                  |
-| **Visual**   | 25+   | Selection and visual mode operations                  |
-| **Plugins**  | 25+   | Common plugin commands (telescope, snacks, git, etc.) |
-| **Layvim\*** | 1+    | Lazyvim commands                                      |
-| **Nvchad\*** | 1+    | NvChad commands                                       |
+| Category    | Count | Description                                           |
+| ----------- | ----- | ----------------------------------------------------- |
+| **Motions** | 20+   | Movement commands (h,j,k,l,w,b,f,etc.)                |
+| **Editing** | 30+   | Text manipulation (i,a,d,c,y,p,etc.)                  |
+| **Visual**  | 25+   | Selection and visual mode operations                  |
+| **Plugins** | 25+   | Common plugin commands (telescope, snacks, git, etc.) |
 
 ## 🛠️ Requirements
 
