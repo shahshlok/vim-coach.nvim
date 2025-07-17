@@ -69,7 +69,7 @@ Basic usage:
 • |<leader>hv| - Visual mode commands
 • |<leader>hp| - Plugin commands
 • |<leader>hl| - Lazyvim* commands
-• |<leader>hn| - Nvchad* commands
+• |<leader>hn| - NvChad* commands
 
 In the picker:
 • <Enter> - Copy keybind to clipboard
@@ -88,6 +88,8 @@ In the picker:
 		• editing - Text manipulation (i,a,d,c,y,p,etc.)
 		• visual - Visual mode operations
 		• plugins - Plugin-specific commands
+		• lazyvim - Lazyvim* commands
+		• nvhcad - NvChad* commands
 
 		Examples: >
 		    :VimCoach
@@ -116,6 +118,7 @@ Default configuration: >
         copy_keymap = "<C-y>",
         close = "<Esc>",
       },
+      user_commands = {},
     })
 <
 
@@ -131,8 +134,31 @@ Default keymaps:				*vim-coach-keymaps*
 	<leader>hv	Visual mode commands
 	<leader>hp	Plugin commands
 	<leader>hl	Lazyvim* commands
-	<leader>hn	NVchad* commands
+	<leader>hn	NvChad* commands
 	<leader>hh	All commands
+
+To add custom commands or edit existing commands, pass the example table below to the
+*vim-coach-configuration* `user_commands` option.
+
+Command format: >
+        <category_name> = {
+          {
+            name = "Command Name",
+            keybind = "key",
+            modes = {"n", "v"},
+            explanation = "What the command does",
+            beginner_tip = "Helpful tip for beginners",
+            when_to_use = "When this command is most useful",
+            context_notes = {
+              file = "Behavior in files",
+              explorer = "Behavior in explorers",
+            },
+            examples = {"example1", "example2"}
+          },
+          ...,
+        },
+        ...,
+<
 
 ==============================================================================
 6. API							*vim-coach-api*
@@ -152,35 +178,13 @@ require("vim-coach").get_commands({category})	*vim-coach.get_commands()*
 require("vim-coach").get_all_commands()		*vim-coach.get_all_commands()*
 		Get all commands as a flat list.
 
+require("vim-coach").register_commands()		*vim-coach.register_commands()*
+		Adds and/or edits custom user commands.
+
 ==============================================================================
 7. CONTRIBUTING					*vim-coach-contributing*
 
-To add new commands, edit the files in lua/vim-coach/commands/:
-• motions.lua - Movement commands
-• editing.lua - Text manipulation commands  
-• visual.lua - Visual mode commands
-• plugins.lua - Plugin-specific commands
-
-To add distro-specific commands, edit/add files in
-lua/vim-coach/commands/distros/:
-• lazyvim.lua - Lazyvim-specific commands
-• nvchad.lua - Nvchad-specific commands
-
-Command format: >
-    {
-      name = "Command Name",
-      keybind = "key",
-      modes = {"n", "v"},
-      explanation = "What the command does",
-      beginner_tip = "Helpful tip for beginners",
-      when_to_use = "When this command is most useful", 
-      context_notes = {
-        file = "Behavior in files",
-        explorer = "Behavior in explorers",
-      },
-      examples = {"example1", "example2"}
-    }
-<
+Pull requests are welcome!
 
 Report bugs and feature requests at:
 https://github.com/shahshlok/vim-coach.nvim/issues

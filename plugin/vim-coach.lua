@@ -17,7 +17,7 @@ end
 -- Create user commands
 vim.api.nvim_create_user_command("VimCoach", function(args)
 	local category = args.args and args.args ~= "" and args.args or "all"
-	require("vim-coach.backends").show_picker({ category = category })
+	require("vim-coach").coach_picker({ category = category })
 end, {
 	nargs = "?",
 	complete = function()

@@ -29,7 +29,7 @@ beginner tips, and context-aware guidance. Perfect for absolute beginners who wa
 <leader>hv → Visual mode commands
 <leader>hp → Plugin-specific commands
 <leader>hl → Lazyvim* commands (when enabled)
-<leader>hn → Nvchad* commands (when enabled)
+<leader>hn → NvChad* commands (when enabled)
 ```
 
 ## 📦 Installation
@@ -104,7 +104,7 @@ lua require('vim-coach').setup()
 | `:VimCoach visual`  | Visual mode commands  |
 | `:VimCoach plugins` | Plugin commands       |
 | `:VimCoach lazyvim` | Lazyvim\* commands    |
-| `:VimCoach nvchad`  | Nvchad\* commands     |
+| `:VimCoach nvchad`  | NvChad\* commands     |
 | `:Coach`            | Alias for `:VimCoach` |
 
 ### Default Keybindings
@@ -117,7 +117,7 @@ lua require('vim-coach').setup()
 | `<leader>hv` | `:VimCoach visual`  | Visual mode commands    |
 | `<leader>hp` | `:VimCoach plugins` | Plugin commands         |
 | `<leader>hl` | `:VimCoach lazyvim` | Lazyvim\* commands      |
-| `<leader>hn` | `:VimCoach nvchad`  | Nvchad\* commands       |
+| `<leader>hn` | `:VimCoach nvchad`  | NvChad\* commands       |
 | `<leader>hh` | `:VimCoach all`     | All commands            |
 
 ### In the Picker
@@ -148,6 +148,7 @@ require("vim-coach").setup({
     copy_keymap = "<C-y>",
     close = "<Esc>",
   },
+  user_commands = {} -- Custom user commands
 })
 ```
 
@@ -162,6 +163,35 @@ require("vim-coach").setup()
 -- Set your own keymaps
 vim.keymap.set('n', '<F1>', '<cmd>VimCoach<cr>', { desc = 'Vim Coach' })
 ```
+
+### 📋 Custom User Commands
+
+1. A user can add their own commands or edit existing commands in the `user_commands` table in the plugin config.
+
+2. Follow this format:
+
+```lua
+<category_name> = {
+    {
+    name = "Command Name",
+    keybind = "key",
+    modes = {"n", "v"},
+    explanation = "What the command does",
+    beginner_tip = "Helpful tip for beginners",
+    when_to_use = "When this command is most useful",
+    context_notes = {
+        file = "Behavior in files",
+        explorer = "Behavior in explorers",
+    },
+    examples = {"example1", "example2"}
+    },
+    ...,
+},
+...,
+```
+
+3. The `user_commands` table is merged with the default commands, so if a command already exists, it will be
+   overwritten.
 
 ## 🎯 What Makes This Different?
 
@@ -201,7 +231,7 @@ Delete Line (dd)
 | **Visual**   | 25+   | Selection and visual mode operations                  |
 | **Plugins**  | 25+   | Common plugin commands (telescope, snacks, git, etc.) |
 | **Layvim\*** | 1+    | Lazyvim commands                                      |
-| **Nvchad\*** | 1+    | Nvchad commands                                       |
+| **Nvchad\*** | 1+    | NvChad commands                                       |
 
 ## 🛠️ Requirements
 
@@ -214,29 +244,7 @@ Delete Line (dd)
 
 ## 🤝 Contributing
 
-We welcome contributions! Here's how you can help:
-
-### Adding New Commands
-
-1. Add/Edit the appropriate file in `lua/vim-coach/commands/` or `lua/vim-coach/commands/distros/*` (for distro-specific
-   commands).
-2. Follow the existing format:
-
-```lua
-{
-  name = "Command Name",
-  keybind = "key",
-  modes = {"n", "v"},
-  explanation = "What the command does",
-  beginner_tip = "Helpful tip for beginners",
-  when_to_use = "When this command is most useful",
-  context_notes = {
-    file = "Behavior in files",
-    explorer = "Behavior in explorers",
-  },
-  examples = {"example1", "example2"}
-}
-```
+We welcome contributions!
 
 ### Reporting Issues
 

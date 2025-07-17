@@ -26,6 +26,7 @@ local config = {
 		copy_keymap = "<C-y>",
 		close = "<Esc>",
 	},
+	user_commands = {},
 }
 
 -- Merge all commands into one searchable database
@@ -52,6 +53,17 @@ local function get_commands_by_category(category)
 		return get_all_commands()
 	end
 	return commands[category] or {}
+end
+
+-- Register custom user commands (or override existing)
+local function register(cmds)
+	for cat, content in pairs(cmds) do
+		if commands[cat] == nil then
+			commands[cat] = #content > 0 and content or nil
+		else
+			commands[cat] = vim.tbl_deep_extend("force", commands[cat], content or {})
+		end
+	end
 end
 
 -- Main picker function using snacks.picker
@@ -105,6 +117,9 @@ function M.setup(opts)
 		return
 	end
 
+	-- Register custom user commands
+	register(config.user_commands)
+
 	-- Optional: Add user commands if not already added by plugin file
 	if not vim.fn.exists(":VimCoach") then
 		vim.api.nvim_create_user_command("VimCoach", function(args)
@@ -141,6 +156,7 @@ function M.info()
 end
 
 -- Export functions for external use
+M.register_commands = register
 M.get_commands = get_commands_by_category
 M.get_all_commands = get_all_commands
 M.get_categories = get_categories
