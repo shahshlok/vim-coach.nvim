@@ -4,7 +4,7 @@
 
 Author: Shlok Shah
 License: MIT
-Version: 2.0.0
+Version: 2.2.0
 
 ==============================================================================
 CONTENTS						*vim-coach-contents*
@@ -38,13 +38,19 @@ Features:
 
 Prerequisites:
 • Neovim >= 0.7
-• snacks.nvim (with picker support)
+• snacks.nvim (with picker support) or telescope.nvim
 
 With lazy.nvim: >
     {
-      "your-username/vim-coach.nvim",
+      "shahshlok/vim-coach.nvim",
       dependencies = {
+        -- Install one of preferred picker
+        -- Snacks
         "folke/snacks.nvim",
+        -- OR
+        -- Telescope
+        "nvim-telescope/telescope.nvim",
+        "nvim-lua/plenary.nvim",
       },
       config = function()
         require("vim-coach").setup()
@@ -99,10 +105,12 @@ Default configuration: >
         border = "rounded",
         title_pos = "center",
       },
+      picker = "snacks", -- "snacks" (Default) | "telescope"
       keymaps = {
         copy_keymap = "<C-y>",
         close = "<Esc>",
       },
+      user_commands = {},
     })
 <
 
@@ -118,6 +126,29 @@ Default keymaps:				*vim-coach-keymaps*
 	<leader>hv	Visual mode commands
 	<leader>hp	Plugin commands
 	<leader>hh	All commands
+
+To add custom commands or edit existing commands, pass the example table below to the
+*vim-coach-configuration* `user_commands` option.
+
+Command format: >
+        <category_name> = {
+          {
+            name = "Command Name",
+            keybind = "key",
+            modes = {"n", "v"},
+            explanation = "What the command does",
+            beginner_tip = "Helpful tip for beginners",
+            when_to_use = "When this command is most useful",
+            context_notes = {
+              file = "Behavior in files",
+              explorer = "Behavior in explorers",
+            },
+            examples = {"example1", "example2"}
+          },
+          ...,
+        },
+        ...,
+<
 
 ==============================================================================
 6. API							*vim-coach-api*
@@ -137,33 +168,16 @@ require("vim-coach").get_commands({category})	*vim-coach.get_commands()*
 require("vim-coach").get_all_commands()		*vim-coach.get_all_commands()*
 		Get all commands as a flat list.
 
+require("vim-coach").register_commands({commands})		*vim-coach.register_commands()*
+		Adds and/or edits custom user commands.
+
 ==============================================================================
 7. CONTRIBUTING					*vim-coach-contributing*
 
-To add new commands, edit the files in lua/vim-coach/commands/:
-• motions.lua - Movement commands
-• editing.lua - Text manipulation commands  
-• visual.lua - Visual mode commands
-• plugins.lua - Plugin-specific commands
-
-Command format: >
-    {
-      name = "Command Name",
-      keybind = "key",
-      modes = {"n", "v"},
-      explanation = "What the command does",
-      beginner_tip = "Helpful tip for beginners",
-      when_to_use = "When this command is most useful", 
-      context_notes = {
-        file = "Behavior in files",
-        explorer = "Behavior in explorers",
-      },
-      examples = {"example1", "example2"}
-    }
-<
+Pull requests are welcome!
 
 Report bugs and feature requests at:
-https://github.com/your-username/vim-coach.nvim/issues
+https://github.com/shahshlok/vim-coach.nvim/issues
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:
