@@ -137,11 +137,11 @@ end
 function M.info()
 	return {
 		name = "vim-coach.nvim",
-		version = "2.1.0",
+		version = "2.2.0",
 		description = "A comprehensive Vim command reference for beginners",
 		total_commands = #get_all_commands(),
 		categories = vim.tbl_keys(commands),
-		picker = "snacks.nvim (default)", -- "telescope.nvim"
+		picker = config.picker .. ".nvim",
 	}
 end
 
