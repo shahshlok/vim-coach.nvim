@@ -75,11 +75,7 @@ docs/_build/
 
 # Markdown files (but allow docs/ folder and root-level docs)
 *.md
-!README.md
-!CHANGELOG.md
-!LICENSE.md
-!docs/*.md
-!docs/**/*.md
+!.github/*.md
 
 # Claude Code Files
 .claude
