@@ -54,12 +54,15 @@ vim.g.vim_coach_no_default_keymaps = 1
 - Neovim >= 0.7
 - `folke/snacks.nvim` (picker UI)
 
-## Docs & Links
+## Documentation
 
-- Full docs index: `docs/README.md`
-- Contributing guide: `docs/CONTRIBUTING.md`
-- Development workflow: `docs/DEVELOPMENT.md`
-- Testing guide: `docs/TESTING.md`
+- **[📖 Full Documentation](docs/README.md)** - Complete guide and overview
+- **[🚀 Quick Start](docs/QUICK_START.md)** - Get up and running in minutes
+- **[🤝 Contributing](docs/CONTRIBUTING.md)** - How to contribute to the project
+- **[🔧 Development](docs/DEVELOPMENT.md)** - Development setup and workflow
+- **[🧪 Testing](docs/TESTING.md)** - Testing guide and best practices
+- **[🏗️ Architecture](docs/ARCHITECTURE.md)** - Technical architecture overview
+- **[⚙️ Technical Details](docs/TECHNICAL.md)** - In-depth technical documentation
 
 ## Local Testing
 
