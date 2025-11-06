@@ -1,5 +1,9 @@
--- Minimal init.lua for testing vim-coach.nvim
--- This creates an isolated environment that won't affect your main Neovim config
+-- LazyVim-based test environment for vim-coach.nvim
+-- This creates an isolated LazyVim environment that won't affect your main Neovim config
+
+-- Set leader keys before loading LazyVim (required)
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 -- Set up temporary paths for plugins
 local temp_dir = vim.fn.stdpath("cache") .. "/vim-coach-test"
@@ -29,54 +33,72 @@ vim.opt.rtp:prepend(lazypath)
 -- Get the path to the vim-coach.nvim repo (parent of test directory)
 local plugin_path = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":p:h:h")
 
--- Set up lazy.nvim with minimal plugins
+-- Set up LazyVim with your plugin
 require("lazy").setup({
-  -- Load snacks.nvim dependency
+  -- Import LazyVim base (this gives you the full LazyVim experience)
   {
-    "folke/snacks.nvim",
-    priority = 1000,
-    config = function()
-      require("snacks").setup({
-        -- Minimal snacks config for testing
-        picker = { enabled = true },
-      })
-    end,
+    "LazyVim/LazyVim",
+    import = "lazyvim.plugins",
+    opts = {
+      colorscheme = "tokyonight",
+      -- Disable LazyVim keymaps that might conflict
+      defaults = {
+        keymaps = true,
+      },
+    },
   },
 
   -- Load vim-coach.nvim from local directory
   {
     dir = plugin_path,
     name = "vim-coach.nvim",
+    dependencies = {
+      "folke/snacks.nvim", -- Required dependency
+    },
     config = function()
       require("vim-coach").setup()
     end,
+    -- Add keymaps for easy access
+    keys = {
+      { "<leader>?", "<cmd>VimCoach<cr>", desc = "Vim Coach - All Commands" },
+      { "<leader>hm", "<cmd>VimCoach motions<cr>", desc = "Vim Coach - Motions" },
+      { "<leader>he", "<cmd>VimCoach editing<cr>", desc = "Vim Coach - Editing" },
+      { "<leader>hv", "<cmd>VimCoach visual<cr>", desc = "Vim Coach - Visual" },
+      { "<leader>hp", "<cmd>VimCoach plugins<cr>", desc = "Vim Coach - Plugins" },
+    },
   },
 }, {
   root = plugin_dir,
   lockfile = temp_dir .. "/lazy-lock.json",
+  install = {
+    missing = true,
+  },
+  checker = {
+    enabled = false, -- Don't check for updates in test environment
+  },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
 })
-
--- Set up some basic options for testing
-vim.opt.termguicolors = true
-vim.opt.number = true
-vim.opt.relativenumber = true
-
--- Set leader key (if not already set)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 -- Print helpful message
 vim.defer_fn(function()
-  print("\n=== vim-coach.nvim Test Environment ===")
+  print("\n=== vim-coach.nvim Test Environment (LazyVim) ===")
   print("Plugin loaded from: " .. plugin_path)
   print("\nTry these commands:")
   print("  :VimCoach         - Open all commands")
-  print("  <leader>?         - Open all commands")
+  print("  <leader>?         - Open all commands (space + ?)")
   print("  <leader>hm        - Motion commands")
   print("  <leader>he        - Editing commands")
-  print("\nPress 'q' to quit")
-  print("=====================================\n")
-end, 100)
-
--- Keymap to quickly quit
-vim.keymap.set('n', 'q', '<cmd>qa!<cr>', { desc = 'Quit test environment' })
+  print("\nThis is a full LazyVim environment!")
+  print("Press 'qq' to quit (normal LazyVim quit)")
+  print("====================================================\n")
+end, 1000)
