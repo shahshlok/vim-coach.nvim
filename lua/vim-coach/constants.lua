@@ -19,7 +19,7 @@ M.ICONS = {
 }
 
 -- Plugin metadata
-M.VERSION = "2.0.0"
+M.VERSION = "2.0.1"
 M.PLUGIN_NAME = "vim-coach.nvim"
 
 return M

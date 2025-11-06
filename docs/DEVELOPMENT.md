@@ -64,8 +64,11 @@ git checkout -b 87_fix_search_crash
 # Make test script executable
 chmod +x test.sh
 
-# Run it (first time takes 1-2 minutes)
+# Run it and choose environment (LazyVim or Minimal)
 ./test.sh
+# Or skip the prompt:
+#   ./test.sh --lazyvim
+#   ./test.sh --minimal
 ```
 
 You're now ready to develop! 🎉

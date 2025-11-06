@@ -8,7 +8,8 @@ This document explains how the isolated testing environment works for vim-coach.
 - [How It Works](#how-it-works)
 - [Directory Structure](#directory-structure)
 - [The Magic Behind test.sh](#the-magic-behind-testsh)
-- [The Magic Behind test/minimal_init.lua](#the-magic-behind-testminimal_initlua)
+- [LazyVim Init (test/lazyvim_init.lua)](#lazyvim-init-testlazyvim_initlua)
+- [Minimal Init (test/minimal_init.lua)](#minimal-init-testminimal_initlua)
 - [What Gets Installed](#what-gets-installed)
 - [Troubleshooting](#troubleshooting)
 
@@ -17,10 +18,14 @@ This document explains how the isolated testing environment works for vim-coach.
 ## Overview
 
 The testing environment allows you to:
-- Test vim-coach.nvim in a **real LazyVim environment**
+- Test vim-coach.nvim in either a **full LazyVim** or a **minimal Neovim** setup
 - **No impact** on your personal Neovim configuration
 - **Fast iteration** - make changes and test immediately
 - **Reproducible** - same environment for all contributors
+
+Two modes are available:
+- LazyVim mode: `test/lazyvim_init.lua` (full distro, most realistic)
+- Minimal mode: `test/minimal_init.lua` (only snacks.nvim + this plugin)
 
 ### Quick Start
 ```bash
@@ -45,6 +50,10 @@ When developing a Neovim plugin, you face these challenges:
 Our testing environment uses Neovim's `-u` flag to create a completely separate instance:
 
 ```bash
+# LazyVim mode (recommended)
+nvim -u test/lazyvim_init.lua
+
+# Minimal mode
 nvim -u test/minimal_init.lua
 ```
 
@@ -63,13 +72,13 @@ This tells Neovim: "Ignore all user configs, only use this file"
        │
        v
 ┌─────────────────────────────────────┐
-│ nvim -u test/minimal_init.lua       │
+│ nvim -u test/<init>.lua             │
 └──────┬──────────────────────────────┘
        │
        v
 ┌─────────────────────────────────────┐
 │ 1. Create temp directory:           │
-│    ~/.cache/nvim/vim-coach-test/    │
+│    ~/.cache/nvim/vim-coach-test-<mode>/ │
 └──────┬──────────────────────────────┘
        │
        v
@@ -121,7 +130,8 @@ This tells Neovim: "Ignore all user configs, only use this file"
 vim-coach.nvim/
 ├── test.sh                    # 🚀 Run this to start testing
 ├── test/
-│   └── minimal_init.lua      # 🔧 LazyVim configuration
+│   ├── lazyvim_init.lua      # 🔧 LazyVim configuration (full distro)
+│   └── minimal_init.lua      # 🔧 Minimal configuration (snacks.nvim + plugin)
 ├── lua/vim-coach/            # 💻 Your plugin code (edit here!)
 │   ├── init.lua
 │   └── commands/
@@ -133,15 +143,13 @@ vim-coach.nvim/
 
 ### Temporary Test Environment
 ```
-~/.cache/nvim/vim-coach-test/
-├── plugins/                   # All test plugins go here
-│   ├── lazy.nvim/            # Package manager
-│   ├── LazyVim/              # LazyVim base
-│   ├── snacks.nvim/          # Required dependency
-│   ├── tokyonight.nvim/      # Colorscheme
-│   ├── neo-tree.nvim/        # File explorer
-│   └── ...                   # All other LazyVim plugins
-└── lazy-lock.json            # Plugin version lockfile
+# LazyVim mode
+~/.cache/nvim/vim-coach-test-lazyvim/
+└── plugins/                  # Full LazyVim + dependencies
+
+# Minimal mode
+~/.cache/nvim/vim-coach-test-minimal/
+└── plugins/                  # Only lazy.nvim + snacks.nvim
 ```
 
 **Important**: Your main config at `~/.config/nvim/` is **NEVER** touched!
@@ -150,53 +158,20 @@ vim-coach.nvim/
 
 ## The Magic Behind test.sh
 
-### Full Script Breakdown
+### CLI Usage
 
 ```bash
-#!/bin/bash
-# Line 1: Shebang - tells system to use bash
-
-# Colors for pretty output
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[0;33m'
-NC='\033[0m'  # No Color (reset)
-
-# Print welcome message
-echo -e "${BLUE}=====================================${NC}"
-echo -e "${GREEN}vim-coach.nvim Test Environment${NC}"
-echo -e "${YELLOW}(LazyVim Edition)${NC}"
-echo -e "${BLUE}=====================================${NC}"
-
-# Launch Neovim with custom config
-# -u: Use this specific init file
-# $(dirname "$0"): Get directory where test.sh is located
-# "$@": Pass any additional arguments to nvim
-nvim -u "$(dirname "$0")/test/minimal_init.lua" "$@"
+./test.sh               # interactive prompt (choose LazyVim or Minimal)
+./test.sh --lazyvim     # force LazyVim mode
+./test.sh --minimal     # force Minimal mode
+./test.sh -- --noplugin # pass flags directly to nvim after --
 ```
 
-### Why `$(dirname "$0")`?
-
-- `$0` = path to test.sh script
-- `dirname` = extracts directory portion
-- Works no matter where you run test.sh from!
-
-Examples:
-```bash
-# If you run: ./test.sh
-# $0 = "./test.sh"
-# dirname "$0" = "."
-# Full path = "./test/minimal_init.lua"
-
-# If you run: /home/user/vim-coach.nvim/test.sh
-# $0 = "/home/user/vim-coach.nvim/test.sh"
-# dirname "$0" = "/home/user/vim-coach.nvim"
-# Full path = "/home/user/vim-coach.nvim/test/minimal_init.lua"
-```
+The script computes the correct `init.lua` path relative to its own location and launches Neovim with `-u <init>`. It runs in an isolated cache directory and never touches your main config.
 
 ---
 
-## The Magic Behind test/minimal_init.lua
+## LazyVim Init (test/lazyvim_init.lua)
 
 This is where the real magic happens! Let's break it down section by section.
 
@@ -215,7 +190,7 @@ vim.g.maplocalleader = "\\"
 ### Section 2: Temporary Directory Setup (Lines 8-16)
 
 ```lua
-local temp_dir = vim.fn.stdpath("cache") .. "/vim-coach-test"
+local temp_dir = vim.fn.stdpath("cache") .. "/vim-coach-test-lazyvim"
 local plugin_dir = temp_dir .. "/plugins"
 
 vim.fn.mkdir(plugin_dir, "p")
@@ -224,7 +199,7 @@ vim.opt.packpath = temp_dir
 
 **What's happening:**
 1. `vim.fn.stdpath("cache")` = `~/.cache/nvim` (OS-appropriate cache dir)
-2. Creates subdirectory: `~/.cache/nvim/vim-coach-test/plugins`
+2. Creates subdirectory: `~/.cache/nvim/vim-coach-test-lazyvim/plugins`
 3. `mkdir(plugin_dir, "p")` = like `mkdir -p`, creates parent dirs too
 4. `packpath` = tells Neovim where to find plugins (isolated!)
 
@@ -336,6 +311,8 @@ end, 1000)
 
 ## What Gets Installed
 
+Applies to LazyVim mode:
+
 ### First Run Downloads (~100-200 MB)
 
 1. **lazy.nvim** (Package manager) - ~500 KB
@@ -368,15 +345,16 @@ end, 1000)
 
 ### Issue: Plugins not installing on first run
 
-**Symptom**: Neovim opens but looks plain, no LazyVim UI
+**Symptom**: Neovim opens but looks plain, no LazyVim UI (LazyVim mode)
 
 **Solution**:
 ```bash
 # Inside Neovim:
 :Lazy sync
 
-# Or from terminal:
-rm -rf ~/.cache/nvim/vim-coach-test/
+# Or from terminal (pick the one you used):
+rm -rf ~/.cache/nvim/vim-coach-test-lazyvim/
+rm -rf ~/.cache/nvim/vim-coach-test-minimal/
 ./test.sh  # Fresh install
 ```
 
@@ -404,7 +382,8 @@ rm -rf ~/.cache/nvim/vim-coach-test/
 :Lazy sync
 
 # Or delete cache and retry:
-rm -rf ~/.cache/nvim/vim-coach-test/
+rm -rf ~/.cache/nvim/vim-coach-test-lazyvim/
+rm -rf ~/.cache/nvim/vim-coach-test-minimal/
 ./test.sh
 ```
 
@@ -432,8 +411,8 @@ chmod +x test.sh
 # Check network speed:
 # Downloads from: github.com, tree-sitter repos
 
-# Disable some treesitter parsers to speed up:
-# Edit test/minimal_init.lua and add to LazyVim opts:
+# Disable some treesitter parsers to speed up (LazyVim mode):
+# Edit test/lazyvim_init.lua and add to LazyVim opts:
 opts = {
   colorscheme = "tokyonight",
   treesitter = {
@@ -448,7 +427,9 @@ opts = {
 
 **Solution**:
 ```bash
-# Run with verbose output:
+# Run with verbose output (choose init file):
+nvim -V9test-debug.log -u test/lazyvim_init.lua
+# or
 nvim -V9test-debug.log -u test/minimal_init.lua
 
 # Then check the log:
@@ -459,8 +440,9 @@ cat test-debug.log
 
 **Nuclear option** - Start fresh:
 ```bash
-# Delete entire test environment:
-rm -rf ~/.cache/nvim/vim-coach-test/
+# Delete entire test environments (one or both):
+rm -rf ~/.cache/nvim/vim-coach-test-lazyvim/
+rm -rf ~/.cache/nvim/vim-coach-test-minimal/
 
 # Verify it's gone:
 ls ~/.cache/nvim/
@@ -473,9 +455,9 @@ ls ~/.cache/nvim/
 
 ## Advanced: Customizing the Test Environment
 
-### Change Colorscheme
+### Change Colorscheme (LazyVim mode)
 
-Edit `test/minimal_init.lua` line 43:
+Edit `test/lazyvim_init.lua` LazyVim opts:
 ```lua
 opts = {
   colorscheme = "catppuccin",  -- or "gruvbox", "nord", etc.
@@ -484,7 +466,7 @@ opts = {
 
 ### Add More Plugins for Testing
 
-Edit `test/minimal_init.lua`, add to the `require("lazy").setup({` block:
+Edit the selected init file (`test/lazyvim_init.lua` or `test/minimal_init.lua`) and add to the `require("lazy").setup({` block:
 ```lua
 {
   "folke/which-key.nvim",
@@ -496,22 +478,17 @@ Edit `test/minimal_init.lua`, add to the `require("lazy").setup({` block:
 
 ### Change Leader Key
 
-Edit `test/minimal_init.lua` line 5:
+Edit leader in the selected init file (`test/lazyvim_init.lua` or `test/minimal_init.lua`):
 ```lua
 vim.g.mapleader = ","  -- Use comma instead of space
 ```
 
-### Disable LazyVim (Go Minimal)
+### Use Minimal Mode (No LazyVim)
 
-Comment out LazyVim import in `test/minimal_init.lua`:
-```lua
--- {
---   "LazyVim/LazyVim",
---   import = "lazyvim.plugins",
--- },
+Run the test runner with minimal mode:
+```bash
+./test.sh --minimal
 ```
-
-Now you'll only have vim-coach.nvim + snacks.nvim (truly minimal!)
 
 ---
 

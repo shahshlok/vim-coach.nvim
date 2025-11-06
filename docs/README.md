@@ -2,6 +2,9 @@
 
 Welcome to the vim-coach.nvim documentation! This directory contains comprehensive guides for users and contributors.
 
+> Testing locally
+> Run `./test.sh` to choose between a full LazyVim environment or a minimal setup. You can also use flags: `./test.sh --lazyvim` or `./test.sh --minimal`. See `docs/TESTING.md` for details.
+
 ## Documentation Index
 
 ### For Users
