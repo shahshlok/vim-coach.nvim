@@ -20,8 +20,8 @@ Thank you for your interest in contributing to vim-coach.nvim! This guide will h
 git clone https://github.com/YOUR_USERNAME/vim-coach.nvim.git
 cd vim-coach.nvim
 
-# 2. Create branch
-git checkout -b my-feature
+# 2. Create branch (issueNumber_branch_title)
+git checkout -b 10_add_testing_env
 
 # 3. Make changes
 # Edit files...
@@ -32,12 +32,26 @@ git checkout -b my-feature
 # 5. Commit and push
 git add .
 git commit -m "feat: add cool feature"
-git push origin my-feature
+git push origin 10_add_testing_env
 
 # 6. Create pull request on GitHub
 ```
 
+> **Branch naming is mandatory**: use the issue number + short title (e.g. `10_add_testing_env`). See the branch naming section below for details.
+
 That's the basics! Read on for details.
+
+---
+
+## Branch Naming Convention
+
+All new work must live on branches named `issueNumber_branch_title`. This keeps every change traceable to a GitHub issue.
+
+- Start with the numeric issue ID, then an underscore, then a short lowercase description that uses underscores instead of spaces.
+- Example: Issue **#10** “Add testing environment” → branch `10_add_testing_env`
+- Open an issue before you branch so you have a number ready; use one branch per issue.
+
+> Pull requests opened from branches that don't follow this pattern will be asked to rename before review.
 
 ---
 
@@ -205,20 +219,14 @@ git checkout main
 # Pull latest changes
 git pull upstream main
 
-# Create feature branch
-git checkout -b add-macro-commands
+# Create feature branch (issueNumber_branch_title)
+git checkout -b 42_add_macro_commands
 ```
 
-**Branch naming**:
-- `feat/description` - New features
-- `fix/description` - Bug fixes
-- `docs/description` - Documentation
-- `refactor/description` - Code cleanup
-
-Examples:
-- `feat/add-window-commands`
-- `fix/clipboard-crash`
-- `docs/improve-testing-guide`
+**Branch naming refresher**:
+- Always use `issueNumber_branch_title`
+- Keep the title short, lowercase, and underscore-separated
+- Example: Issue #42 “Add macro commands” → `42_add_macro_commands`
 
 ### 2. Make Your Changes
 
@@ -566,14 +574,14 @@ Usually **2-3 days** for first response, **1 week** for full review.
 Yes, but use **separate branches** for each feature:
 ```bash
 git checkout main
-git checkout -b feature-one
+git checkout -b 21_add_visual_mode_examples
 
-# Work on feature one...
+# Work on issue 21...
 
 git checkout main
-git checkout -b feature-two
+git checkout -b 34_fix_picker_crash
 
-# Work on feature two...
+# Work on issue 34...
 ```
 
 ### My PR has merge conflicts, what do I do?

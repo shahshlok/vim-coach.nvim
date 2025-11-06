@@ -49,12 +49,14 @@ cd vim-coach.nvim
 ### 2. Create a Branch
 
 ```bash
-# Create a feature branch (use a descriptive name)
-git checkout -b add-macro-commands
+# Create a feature branch tied to the issue number
+git checkout -b 42_add_macro_commands
 
 # Or for bug fixes:
-git checkout -b fix-search-crash
+git checkout -b 87_fix_search_crash
 ```
+
+> Branch names **must** follow `issueNumber_branch_title` (e.g. `10_add_testing_env`). Open an issue before branching so the number is ready.
 
 ### 3. Set Up Testing
 
