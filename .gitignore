@@ -73,7 +73,7 @@ spec/
 # Documentation builds
 docs/_build/
 
-# Markdown files
+# Markdown files (but allow docs/ folder and root-level docs)
 *.md
 !.github/*.md
 
