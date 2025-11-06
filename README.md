@@ -7,6 +7,7 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 ![Neovim](https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white)
 ![Lua](https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
+[![CI](https://github.com/shahshlok/vim-coach.nvim/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/shahshlok/vim-coach.nvim/actions/workflows/ci.yml)
 
 ## 📖 Table of Contents
 
