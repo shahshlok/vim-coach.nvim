@@ -73,9 +73,14 @@ spec/
 # Documentation builds
 docs/_build/
 
-# Markdown files
+# Markdown files (but allow docs/ folder and root-level docs)
 *.md
 !.github/*.md
+!README.md
+!CHANGELOG.md
+!LICENSE.md
+!docs/*.md
+!docs/**/*.md
 
 # Claude Code Files
 .claude
