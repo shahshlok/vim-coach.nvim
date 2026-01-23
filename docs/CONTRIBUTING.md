@@ -2,6 +2,8 @@
 
 Thank you for your interest in contributing to vim-coach.nvim! This guide will help you get started.
 
+Whether you're fixing a typo, adding a new command, or improving documentation, your contribution is valuable and appreciated.
+
 ## Table of Contents
 - [Quick Start](#quick-start)
 - [Ways to Contribute](#ways-to-contribute)
