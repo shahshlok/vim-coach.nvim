@@ -1,44 +1,74 @@
-# 🎯 vim-coach.nvim
-
-> **Your personal Vim coach - A comprehensive, beginner-friendly command reference for Neovim**
-
-A Neovim plugin that provides an interactive, searchable reference for all Vim commands with detailed explanations, beginner tips, and context-aware guidance. Perfect for absolute beginners who want to master Vim efficiently.
+# vim-coach.nvim
 
 ![Neovim](https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white)
 ![Lua](https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
 
-## ✨ Features
+## What is vim-coach.nvim?
 
-- 🔍 **Fuzzy searchable** - Find any command instantly with modern snacks.picker interface
-- 📚 **120+ commands** - Comprehensive coverage of Vim motions, editing, visual mode, and plugins
-- 🎓 **Beginner-focused** - Detailed explanations with "when to use" guidance
-- 🌐 **Context-aware** - Different explanations for file vs explorer vs git contexts
-- 💡 **Coaching tips** - Learn WHY and WHEN to use each command
-- 📋 **Copy keybinds** - Press Enter or Ctrl+Y to copy commands to clipboard
-- 📱 **Modern UI** - Clean interface with text wrapping and enhanced preview
-- 🎯 **Categorized** - Browse by command type (motions, editing, visual, plugins)
+**vim-coach.nvim** is a helpful assistant that lives inside Neovim. It's like having a cheat sheet for Vim commands built right into your editor!
 
-## 🎪 Demo
+Forget Vim commands? Don't remember if it's `w` or `W` to jump words? Just press `<leader>?` and a searchable menu pops up with:
+- **What** each command does (in plain English)
+- **When** to use it (practical scenarios)
+- **Why** it's useful (context and tips)
+- **How** to use it (examples)
+
+Then you can copy the keybind directly with one keystroke. Learning Vim has never been easier!
+
+---
+
+## How It Works (Visual Guide)
 
 ```
-<leader>? → Opens comprehensive command search
-<leader>hm → Motion commands (h,j,k,l,w,b,f,etc.)
-<leader>he → Editing commands (i,a,d,c,y,p,etc.)
-<leader>hv → Visual mode commands
-<leader>hp → Plugin-specific commands
+┌─────────────────────────────────────────────────────────┐
+│  Your Neovim Editor                                     │
+│                                                          │
+│  You press: <leader>?                                   │
+│                     ↓                                    │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │  vim-coach Picker Menu                            │   │
+│  │  ─────────────────────────────────────────────── │   │
+│  │  ○ j - Move down one line                       │   │
+│  │  ○ k - Move up one line                         │   │
+│  ○ w - Jump to next word                           │   │
+│  │  ○ b - Jump to previous word                    │   │
+│  │  ○ d - Delete (with motion)                     │   │
+│  │                                                   │   │
+│  │  [Type to search] █                              │   │
+│  └──────────────────────────────────────────────────┘   │
+│                     ↓                                    │
+│  Press Enter or Ctrl+Y to copy "dw" to clipboard      │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
 ```
 
-## 📦 Installation
+---
 
-### [lazy.nvim](https://github.com/folke/lazy.nvim) (Recommended)
+## Features
+
+What makes vim-coach.nvim special:
+
+- **Smart Search** - Fuzzy search through hundreds of Vim commands instantly
+- **Clear Explanations** - Each command explained with "what/when/why" in beginner-friendly language
+- **Fast** - Find what you need in seconds, not minutes
+- **Copy Commands** - Press Enter to copy keybinds to your clipboard
+- **Clean Interface** - Beautiful, easy-to-read picker menu
+- **Works Out-of-Box** - No complicated setup, just install and use
+- **Organized** - Commands grouped into categories: Motions, Editing, Visual, Plugins
+
+---
+
+## Quick Start (3 Minutes)
+
+### Step 1: Install the Plugin
+
+If you're using **lazy.nvim** (most common):
 
 ```lua
 {
   "shahshlok/vim-coach.nvim",
-  dependencies = {
-    "folke/snacks.nvim",
-  },
+  dependencies = { "folke/snacks.nvim" },
   config = function()
     require("vim-coach").setup()
   end,
@@ -48,179 +78,192 @@ A Neovim plugin that provides an interactive, searchable reference for all Vim c
 }
 ```
 
-### [packer.nvim](https://github.com/wbthomason/packer.nvim)
+**Don't know what this means?** See [Getting Started Guide](docs/GETTING_STARTED.md) for detailed step-by-step instructions.
 
-```lua
-use {
-  "shahshlok/vim-coach.nvim",
-  requires = {
-    "folke/snacks.nvim",
-  },
-  config = function()
-    require("vim-coach").setup()
-  end
-}
-```
+### Step 2: Restart Neovim
 
-### [vim-plug](https://github.com/junegunn/vim-plug)
+After adding the plugin config, restart your editor.
 
-```vim
-Plug 'folke/snacks.nvim'
-Plug 'shahshlok/vim-coach.nvim'
+### Step 3: Use It!
 
-" In your init.lua or init.vim:
-lua require('vim-coach').setup()
-```
-
-## 🚀 Usage
-
-### Commands
-
-| Command | Description |
-|---------|-------------|
-| `:VimCoach` | Open all commands |
-| `:VimCoach motions` | Motion commands only |
-| `:VimCoach editing` | Editing commands only |
-| `:VimCoach visual` | Visual mode commands |
-| `:VimCoach plugins` | Plugin commands |
-| `:Coach` | Alias for `:VimCoach` |
-
-### Default Keybindings
-
-| Key | Command | Description |
-|-----|---------|-------------|
-| `<leader>?` | `:VimCoach` | Open comprehensive help |
-| `<leader>hm` | `:VimCoach motions` | Motion commands |
-| `<leader>he` | `:VimCoach editing` | Editing commands |
-| `<leader>hv` | `:VimCoach visual` | Visual mode commands |
-| `<leader>hp` | `:VimCoach plugins` | Plugin commands |
-| `<leader>hh` | `:VimCoach all` | All commands |
-
-### In the Picker
-
-| Key | Action |
-|-----|--------|
-| `Enter` | Copy keybind to clipboard |
-| `Ctrl+Y` | Copy keybind to clipboard |
-| `Esc` | Close picker |
-
-## ⚙️ Configuration
-
-```lua
-require("vim-coach").setup({
-  -- Disable default keymaps
-  -- Set vim.g.vim_coach_no_default_keymaps = 1 before setup
-  
-  window = {
-    border = "rounded",
-    title_pos = "center",
-  },
-  keymaps = {
-    copy_keymap = "<C-y>",
-    close = "<Esc>",
-  },
-})
-```
-
-### Disable Default Keymaps
-
-If you want to set your own keymaps:
-
-```lua
-vim.g.vim_coach_no_default_keymaps = 1
-require("vim-coach").setup()
-
--- Set your own keymaps
-vim.keymap.set('n', '<F1>', '<cmd>VimCoach<cr>', { desc = 'Vim Coach' })
-```
-
-## 🎯 What Makes This Different?
-
-Unlike other cheatsheet plugins, vim-coach.nvim provides:
-
-### 📖 Comprehensive Explanations
-```
-Delete Line (dd)
-├─ What: Deletes entire current line  
-├─ When: Removing code lines, empty lines
-├─ Tip: Cursor can be anywhere on the line
-├─ Context: In file: removes code | In explorer: may delete files
-└─ Examples: dd, 2dd (delete 2 lines)
-```
-
-### 🧠 Beginner Coaching
-- **WHY** use each command
-- **WHEN** it's most effective  
-- **WHERE** it works (file vs explorer context)
-- **HOW** it differs from similar commands
-
-### 🔍 Smart Search
-- Search by command name: "delete line"
-- Search by keybind: "dd"
-- Search by purpose: "remove text"
-- Fuzzy matching finds everything
-
-## 📚 Command Categories
-
-| Category | Count | Description |
-|----------|-------|-------------|
-| **Motions** | 20+ | Movement commands (h,j,k,l,w,b,f,etc.) |
-| **Editing** | 30+ | Text manipulation (i,a,d,c,y,p,etc.) |
-| **Visual** | 25+ | Selection and visual mode operations |
-| **Plugins** | 25+ | Common plugin commands (telescope, git, etc.) |
-
-## 🛠️ Requirements
-
-- Neovim >= 0.7
-- [snacks.nvim](https://github.com/folke/snacks.nvim) (with picker support)
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-### Adding New Commands
-
-1. Edit the appropriate file in `lua/vim-coach/commands/`
-2. Follow the existing format:
-
-```lua
-{
-  name = "Command Name",
-  keybind = "key",
-  modes = {"n", "v"},
-  explanation = "What the command does",
-  beginner_tip = "Helpful tip for beginners", 
-  when_to_use = "When this command is most useful",
-  context_notes = {
-    file = "Behavior in files",
-    explorer = "Behavior in explorers",
-  },
-  examples = {"example1", "example2"}
-}
-```
-
-### Reporting Issues
-
-- 🐛 Found a bug? [Open an issue](https://github.com/your-username/vim-coach.nvim/issues)
-- 💡 Have a suggestion? [Start a discussion](https://github.com/your-username/vim-coach.nvim/discussions)
-- 📝 Missing a command? [Request it](https://github.com/your-username/vim-coach.nvim/issues)
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with [snacks.nvim](https://github.com/folke/snacks.nvim)
-- Inspired by the need for better Vim learning resources
-- Created for the Neovim community
-
-## ⭐ Show Your Support
-
-If this plugin helps you learn Vim, please give it a star! ⭐
+Press `<leader>?` (usually `Space + ?`) to open vim-coach and start learning!
 
 ---
 
-**Happy Vimming!** 🎉
+## Usage
 
-*"The best way to learn Vim is with a good coach by your side."*
+### Opening vim-coach
+
+Method 1: Keyboard shortcut
+```
+Press: <leader>?  (usually Space + ?)
+```
+
+Method 2: Vim command
+```
+:VimCoach
+```
+
+### Inside the Picker Menu
+
+| Key | Action |
+|-----|--------|
+| `Enter` or `Ctrl+Y` | Copy the keybind to clipboard |
+| `Esc` | Close the menu |
+| Type anything | Search for commands (e.g., type "delete" to find delete commands) |
+| `j` / `k` | Move up/down in list |
+
+### Filter by Category
+
+Want to only see motion commands? Use:
+
+```vim
+:VimCoach motions
+```
+
+Available categories: `all`, `motions`, `editing`, `visual`, `plugins`
+
+---
+
+## Configuration (Optional)
+
+Want to customize vim-coach? Here's how:
+
+```lua
+require("vim-coach").setup({
+  -- Customize the window appearance
+  window = {
+    border = "rounded",      -- Can be: none, single, double, rounded, etc.
+    title_pos = "center",    -- Window title position
+  },
+  
+  -- Customize keyboard shortcuts
+  keymaps = {
+    copy_keymap = "<C-y>",   -- Change copy shortcut
+    close = "<Esc>",         -- Change close shortcut
+  },
+})
+
+-- Don't want default keymaps? Disable them:
+vim.g.vim_coach_no_default_keymaps = 1
+```
+
+**New to Neovim configuration?** Check out the [Configuration Guide](docs/CONFIGURATION.md).
+
+---
+
+## Requirements
+
+- **Neovim** 0.7 or newer (check with `:version`)
+- **snacks.nvim** (automatically installed by lazy.nvim)
+
+---
+
+## Documentation
+
+Start here based on your experience level:
+
+### Complete Beginner?
+- **[Getting Started Guide](docs/GETTING_STARTED.md)** - Start here! Setup from scratch, Lua basics, Neovim intro
+
+### Ready to Use It?
+- **[Quick Start](docs/QUICK_START.md)** - Install and start using vim-coach in 5 minutes
+- **[Configuration Guide](docs/CONFIGURATION.md)** - Customize vim-coach to your preferences
+
+### Want to Learn More?
+- **[Full Documentation](docs/README.md)** - Complete guide and overview
+- **[How vim-coach Works](docs/ARCHITECTURE.md)** - Guide to architecture (beginner-friendly!)
+- **[API Reference](docs/API_REFERENCE.md)** - For developers adding features
+
+### Want to Contribute?
+- **[Contributing Guide](docs/CONTRIBUTING.md)** - How to help make vim-coach better
+- **[Development Setup](docs/DEVELOPMENT.md)** - Set up development environment
+- **[Code Guide](docs/CODE_GUIDE.md)** - Understand the codebase
+
+### Advanced
+- **[Testing Guide](docs/TESTING.md)** - Writing and running tests
+- **[Technical Details](docs/TECHNICAL.md)** - Deep dive into implementation
+
+---
+
+## Examples
+
+### Example 1: Finding How to Delete Words
+
+**Scenario:** You keep forgetting the command to delete a word.
+
+1. Press `<leader>?` to open vim-coach
+2. Type `delete word` in the search box
+3. You see: `dw - Delete to end of word`
+4. Press `Enter` to copy it
+5. Now `dw` is in your clipboard—paste it anywhere!
+
+### Example 2: Searching for a Command
+
+**Scenario:** You know it involves the letter 'v' but can't remember what.
+
+1. Press `<leader>?`
+2. Type `v` in search
+3. See all commands with 'v': visual mode, various motions, etc.
+4. Read the explanations and pick what you need
+
+### Example 3: Learning Visual Mode Commands
+
+**Scenario:** You want to learn visual mode commands today.
+
+1. Press `:VimCoach visual`
+2. See all visual mode commands in one place
+3. Read through them to learn!
+
+---
+
+## Local Testing
+
+Want to try vim-coach in a sandboxed environment before installing it?
+
+```bash
+./test.sh --lazyvim    # Full environment
+# or
+./test.sh --minimal    # Minimal setup
+```
+
+For more details, see [Testing Guide](docs/TESTING.md).
+
+---
+
+## Troubleshooting
+
+### "vim-coach command not found"
+See [Troubleshooting Guide](docs/TROUBLESHOOTING.md)
+
+### "I don't understand how to install this"
+See [Getting Started Guide](docs/GETTING_STARTED.md) - it has step-by-step instructions
+
+### Something else?
+Check [Troubleshooting Guide](docs/TROUBLESHOOTING.md) or open an issue
+
+---
+
+## Contributing
+
+We'd love your help! Whether you want to:
+- Add new commands to the database
+- Improve explanations
+- Fix bugs
+- Add features
+
+Start with [Contributing Guide](docs/CONTRIBUTING.md).
+
+---
+
+## License
+
+MIT — see `LICENSE`.
+
+---
+
+## Questions?
+
+- Read the docs
+- Search for your question in existing issues
+- Open a new issue if you can't find an answer
